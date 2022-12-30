@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title></title>
+	<link type="image/png" sizes="16x16" rel="icon" href="build/images/favicon.png">	
+	<link rel="stylesheet" type="text/css" href="./build/css/style.css">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">	
+</head>
+<body id="body">
+	<section class="main">
+		<div class="toggle">
+			<p class="toggle__txt">Dark mode: <span id="currentMode">off</span></p>
+			<label class="switch">
+			  <input type="checkbox" id="toggle">
+			  <span class="slider round"></span>
+			</label>					
+		</div>
+		<div class="calculator">
+			<div class="calculator__display calculator-display">
+				<div class="calculator-display__operations">12 * 10 + 3</div>
+				<div class="calculator-display__current">123</div>
+			</div>
+			<div class="calculator__main">
+				<div class="calculator__row">
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">ln</span>					
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">log<sup class="sub-element"><small>10</small></sup></span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">M+</span>					
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">M-</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">MR</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">MC</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">del</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">clear</span>
+				</div>
+				<div class="calculator__row">
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">x<sup class="sup-element"><small>y</small></sup></span>					
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">sin</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">&#8730;</span>					
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">7</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">8</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">9</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">%</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">+ -</span>					
+				</div>
+				<div class="calculator__row">
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">x&#178;</span>				
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">cos</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">&#8731;</span>				
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">4</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">5</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">6</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">x</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">/</span>
+				</div>
+				<div class="calculator__row">
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">x&#179;</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">tan</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">1/x</span>										
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">1</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">2</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">3</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">+</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">-</span>
+				</div>
+				<div class="calculator__row">
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">10<sup class="sup-element"><small>x</small></sup></span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">x!</span>										
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">(</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">)</span>					
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light">0</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium">.</span>					
+					<span class="calculator__button calculator-button calculator-button_large calculator-button_dark">ENTER</span>						
+				</div>
+			</div>
+		</div>
+	</section>
+	<script type="text/javascript" src="./index.js"></script>
+</body> 
+</html>
