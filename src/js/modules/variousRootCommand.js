@@ -1,10 +1,12 @@
-export class SquareRootCommand {
+export class VariousRootCommand {
   constructor(value) {
     this.value = value;
   }
 
   execute(currentValue) {
-    return currentValue ** (1 / 2)
+    console.log(this.value);
+    console.log(currentValue);
+    //return currentValue ** (1 / 2)
   }
 
   undo(currentValue) {

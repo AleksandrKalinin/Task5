@@ -1,4 +1,4 @@
-export class DivideCommand {
+export class DivideOneByValueCommand {
   constructor(value) {
     this.value = value;
   }

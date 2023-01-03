@@ -1,4 +1,4 @@
-export class PowerTwoCommand {
+export class PowerThreeCommand {
   constructor(value) {
     this.value = value;
   }

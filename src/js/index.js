@@ -8,12 +8,21 @@ import { DivideCommand } from './modules/divideCommand';
 import { SetValueCommand } from './modules/setValueCommand';
 import { ResetCommand } from './modules/resetCommand';
 import { FactorialCommand } from './modules/factorialCommand';
+import { ReverseSignCommand } from './modules/reverseSignCommand';
+import { DivideOneByValueCommand } from './modules/divideOneByValueCommand';
+import { TenPowerCommand } from './modules/tenPowerCommand';
+import { PowerTwoCommand } from './modules/powerTwoCommand';
+import { PowerThreeCommand } from './modules/powerThreeCommand';
+import { PowerYCommand } from './modules/powerYCommand';
+import { SquareRootCommand } from './modules/squareRootCommand';
+import { CubicRootCommand } from './modules/cubicRootCommand';
+import { VariousRootCommand } from './modules/variousRootCommand';
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
 
+//Proxy object for watching changes of calculator values
 const calculatorObject = new Calculator(0);
-
 const calculator = new Proxy(calculatorObject, {
   set: function (target, key, value) {
     target[key] = value;
@@ -34,18 +43,7 @@ const calculator = new Proxy(calculatorObject, {
 //calculator.undo(new DivideCommand());
 //console.log(calculator.value);
 
-/*
-const btn0 = document.getElementById('btn0');
-const btn1 = document.getElementById('btn1');
-const btn2 = document.getElementById('btn2');
-const btn3 = document.getElementById('btn3');
-const btn4 = document.getElementById('btn4');
-const btn5 = document.getElementById('btn5');
-const btn6 = document.getElementById('btn6');
-const btn7 = document.getElementById('btn7');
-const btn8 = document.getElementById('btn8');
-const btn9 = document.getElementById('btn9');
-*/
+//Numbers listener
 const numbers = document.querySelectorAll('.button-number');
 
 numbers.forEach((e) => {
@@ -58,19 +56,24 @@ numbers.forEach((e) => {
   })
 })
 
-const btnDelete = document.getElementById('btnDelete');
+//Delete Command
 
+const btnDelete = document.getElementById('btnDelete');
 btnDelete.addEventListener('click', () => {
   if (calculator.currentInput !== 0) {
     calculator.undoInput(new SetValueCommand(calculator.currentInput));
   }
 })
 
-const btnClear = document.getElementById('btnClear');
 
+//ClearCommand
+
+const btnClear = document.getElementById('btnClear');
 btnClear.addEventListener('click', () => {
   calculator.clear();
 });
+
+//AddCommand, SubtractCommand, MultiplyCommand, DivideCommand
 
 const btnAdd = document.getElementById('btnAdd');
 const btnSubtract = document.getElementById('btnSubtract');
@@ -85,11 +88,48 @@ btnAdd.addEventListener('click', () => {
   }
 })
 
+btnSubtract.addEventListener('click', () => {
+  if (calculator.pending === null ) {
+    calculator.setValue();
+    calculator.setPending('-');
+    calculator.updateOperations(calculator.currentInput + ' - ')
+  }
+})
+
+btnMultiply.addEventListener('click', () => {
+  if (calculator.pending === null ) {
+    calculator.setValue();
+    calculator.setPending('*');
+    calculator.updateOperations(calculator.currentInput + ' * ')
+  }
+})
+
+btnDivide.addEventListener('click', () => {
+  if (calculator.pending === null ) {
+    calculator.setValue();
+    calculator.setPending('/');
+    calculator.updateOperations(calculator.currentInput + ' / ')
+  }
+})
+
+//Enter
+
 const btnEnter = document.getElementById('btnEnter');
 btnEnter.addEventListener('click', () => {
+  /*
+  switch(calculator.pending) {
+  case '+': calculator.execute(new AddCommand(calculator.currentInput));
+  case '-': calculator.execute(new SubtractCommand(calculator.currentInput));
+  case '*': calculator.execute(new MultiplyCommand(calculator.currentInput));
+  case '/': calculator.execute(new DivideCommand(calculator.currentInput));
+  } */
   calculator.execute(new AddCommand(calculator.currentInput));
   calculator.updateOperations(calculator.currentInput);
+  console.log(calculator);
+  console.log(calculator.history[0])
 })
+
+//Factorial
 
 const btnFactorial = document.getElementById('btnFactorial');
 btnFactorial.addEventListener('click', () => {
@@ -97,41 +137,63 @@ btnFactorial.addEventListener('click', () => {
   calculator.executeInput(new FactorialCommand(calculator.currentInput));
 })
 
-//calculator.executeInput(new FactorialCommand(5));
-//calculator.undoInput(new FactorialCommand());
+//ReverseSign Command
+
+const btnReverseSign = document.getElementById('btnReverseSign');
+btnReverseSign.addEventListener('click', () => {
+  calculator.executeInput(new ReverseSignCommand());
+}) 
 
 
-function router() {
-  switch(calculator.pending) {
-  case '+': calculator.execute(new AddCommand(calculator.currentInput));
-  case '-': calculator.execute(new SubtractCommand(calculator.currentInput));
-  case '*': calculator.execute(new MultiplyCommand(calculator.currentInput));
-  case '/': calculator.execute(new DivideCommand(calculator.currentInput));
-  }
-}
+//DivideOneByValueCOmmand
+
+const btnDivideOneByValue = document.getElementById('btnDivideOneByValue');
+btnDivideOneByValue.addEventListener('click', () => {
+  calculator.executeInput(new DivideOneByValueCommand(calculator.currentInput));
+})
+
+//TenPowerX delete
+const btnTenPowerX = document.getElementById('btnTenPowerX');
+btnTenPowerX.addEventListener('click', () => {
+  calculator.executeInput(new TenPowerCommand(calculator.currentInput));
+})
+
+//PowerTwoCommand
+const btnPower2 = document.getElementById('btnPower2');
+btnPower2.addEventListener('click', () => {
+  calculator.executeInput(new PowerTwoCommand(calculator.currentInput));
+})
+
+//PowerThreeCommand
+const btnPower3 = document.getElementById('btnPower3');
+btnPower3.addEventListener('click', () => {
+  calculator.executeInput(new PowerThreeCommand(calculator.currentInput));
+})
+
+//PowerYCommand
+const btnPowerY = document.getElementById('btnPowerY');
+btnPowerY.addEventListener('click', () => {
+  calculator.executeInput(new PowerYCommand(calculator.currentInput));
+})
+
+//SquareRootCommand
+const btnSquareRoot = document.getElementById('btnSquareRoot');
+btnSquareRoot.addEventListener('click', () => {
+  calculator.executeInput(new SquareRootCommand(calculator.currentInput));
+})
+
+//CubicRootCommand
+const btnCubicRoot = document.getElementById('btnCubicRoot');
+btnCubicRoot.addEventListener('click', () => {
+  calculator.executeInput(new CubicRootCommand(calculator.currentInput));
+})
+
+const btnYRoot = document.getElementById('btnYRoot');
+btnYRoot.addEventListener('click', () => {
+  calculator.executeInput(new VariousRootCommand(calculator.currentInput));
+})
 
 /*
-
-//main operations
-const btnAdd = document.getElementById('btnAdd');
-const btnSubtract = document.getElementById('btnSubtract');
-const btnMultiply = document.getElementById('btnMultiply');
-const btnDivide = document.getElementById('btnDivide');
-const btnMod = document.getElementById('btnMod');
-const btnFactorial = document.getElementById('btnFactorial');
-const btnSwitchSign = document.getElementById('btnSwitchSign');
-
-//main buttons
-const btn0 = document.getElementById('btn0');
-const btn1 = document.getElementById('btn1');
-const btn2 = document.getElementById('btn2');
-const btn3 = document.getElementById('btn3');
-const btn4 = document.getElementById('btn4');
-const btn5 = document.getElementById('btn5');
-const btn6 = document.getElementById('btn6');
-const btn7 = document.getElementById('btn7');
-const btn8 = document.getElementById('btn8');
-const btn9 = document.getElementById('btn9');
 
 //M-buttons
 const btnMemoryClear = document.getElementById('btnMemoryClear');
@@ -140,18 +202,6 @@ const btnMemorySubtract = document.getElementById('btnMemorySubtract');
 const btnMemoryAdd = document.getElementById('btnMemoryAdd');
 
 //root and square operations
-const btnSquareRoot = document.getElementById('btnSquareRoot');
-const btnCubicRoot = document.getElementById('btnCubicRoot');
-const btnPower2 = document.getElementById('btnPower2');
-const btnPower3 = document.getElementById('btnPower3');
-const btnPowerY = document.getElementById('btnPowerY');
-const btnTenPowerX = document.getElementById('btnTenPowerX');
-const btnOneDivideOnX = document.getElementById('OneDivideOnX');
-
-//additional buttons
-const btnDelete = document.getElementById('btnDelete');
-const btnClear = document.getElementById('btnClear');
-const btnEnter = document.getElementById('btnEnter');
 
 //not implemented yet
 const btnLn = document.getElementById('btnLn');

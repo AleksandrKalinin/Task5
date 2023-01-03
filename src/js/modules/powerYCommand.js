@@ -4,7 +4,9 @@ export class PowerYCommand {
   }
 
   execute(currentValue) {
-    return currentValue + this.value;
+    console.log(this.value);
+    console.log(currentValue);
+    //return currentValue ** (1 / 3);
   }
 
   undo(currentValue) {
