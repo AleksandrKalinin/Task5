@@ -6,7 +6,7 @@ const ESLintPlugin = require('eslint-webpack-plugin');
 
 
 module.exports = {
-  entry: path.join(__dirname, 'src', 'index.js'),
+  entry: path.join(__dirname, 'src/js', 'index.js'),
   output: {
     path: path.join(__dirname, 'dist'),
     filename: 'index.[contenthash].js',
@@ -35,27 +35,27 @@ module.exports = {
           filename: path.join('icons', '[name].[contenthash][ext]'),
         },
       },          
-   ],
- },  
- plugins: [
- new HtmlWebpackPlugin({
-  template: path.join(__dirname, 'src', 'index.html'),
-  filename: 'index.html',
-}),
- new ESLintPlugin(),
- new FileManagerPlugin({
-   events: {
-     onStart: {
-       delete: ['dist'],
-     },
-   },
- }),
- new MiniCssExtractPlugin({
-  filename: '[name].[contenthash].css',
-}),         
- ],
- devServer: {
-   watchFiles: path.join(__dirname, 'src'),
-   port: 9000,
- },  
+    ],
+  },  
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: path.join(__dirname, 'src', 'index.html'),
+      filename: 'index.html',
+    }),
+    new ESLintPlugin(),
+    new FileManagerPlugin({
+      events: {
+        onStart: {
+          delete: ['dist'],
+        },
+      },
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[contenthash].css',
+    }),         
+  ],
+  devServer: {
+    watchFiles: path.join(__dirname, 'src'),
+    port: 9000,
+  },  
 };

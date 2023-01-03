@@ -1,8 +1,6 @@
-import './main.sass';
-
-let toggle = document.getElementById('toggle');
-let body = document.getElementById('body');
-let currentMode = document.getElementById('currentMode');
+const toggle = document.getElementById('toggle');
+const body = document.getElementById('body');
+const currentMode = document.getElementById('currentMode');
 
 toggle.addEventListener('change', function(){
   body.classList.toggle('theme-dark');
