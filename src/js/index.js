@@ -1,30 +1,32 @@
 import '../sass/main.sass';
-import './modules/toggle.js';
-import { Calculator } from './modules/calculator';
-import { AddCommand } from './modules/addCommand';
-import { SubtractCommand } from './modules/subtractCommand';
-import { MultiplyCommand } from './modules/multiplyCommand';
-import { DivideCommand } from './modules/divideCommand';
-import { SetValueCommand } from './modules/setValueCommand';
-import { ResetCommand } from './modules/resetCommand';
-import { FactorialCommand } from './modules/factorialCommand';
-import { ReverseSignCommand } from './modules/reverseSignCommand';
-import { DivideOneByValueCommand } from './modules/divideOneByValueCommand';
-import { TenPowerCommand } from './modules/tenPowerCommand';
-import { PowerTwoCommand } from './modules/powerTwoCommand';
-import { PowerThreeCommand } from './modules/powerThreeCommand';
-import { PowerYCommand } from './modules/powerYCommand';
-import { SquareRootCommand } from './modules/squareRootCommand';
-import { CubicRootCommand } from './modules/cubicRootCommand';
-import { VariousRootCommand } from './modules/variousRootCommand';
-import { PercentageCommand } from './modules/percentageCommand';
+import './toggle.js';
+import { Calculator } from './calculator';
+import { 
+  AddCommand, 
+  SubtractCommand, 
+  MultiplyCommand, 
+  DivideCommand, 
+  SetValueCommand, 
+  ResetCommand, 
+  FactorialCommand, 
+  ReverseSignCommand, 
+  DivideOneByValueCommand, 
+  TenPowerCommand, 
+  PowerTwoCommand, 
+  PowerThreeCommand, 
+  PowerYCommand, 
+  SquareRootCommand, 
+  CubicRootCommand, 
+  VariousRootCommand, 
+  PercentageCommand 
+} from './commands';
 
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
 
-//Proxy object for watching changes of calculator values
 const calculatorObject = new Calculator(0);
+
 const calculator = new Proxy(calculatorObject, {
   set: function (target, key, value) {
     target[key] = value;
@@ -48,23 +50,30 @@ const executeFunction = () => {
   case 'yroot': calculator.executeInput(new VariousRootCommand(calculator.value));
     break;
   case '%': calculator.executeInput(new PercentageCommand(calculator.value));
+    break;
+  case '^': calculator.executeInput(new PowerYCommand(calculator.value));  
     break;    
   }
   calculator.resetOperations();
   calculator.setPending(null);
 }
 
-//Numbers listener
-const numbers = document.querySelectorAll('.button-number');
+//Digits Numbers listener
 
-numbers.forEach((e) => {
+const digits = document.querySelectorAll('.button-number');
+
+function digitsFunction(e) {
+  if (calculator.pending !== null && calculator.value === calculator.currentInput) {
+    calculator.resetInput();
+  }
+  const digit = Number(e.getAttribute('value'));
+  calculator.executeInput(new SetValueCommand(digit));  
+}
+
+digits.forEach((e) => {
   e.addEventListener('click', () => {
-    if (calculator.pending !== null && calculator.value === calculator.currentInput) {
-      calculator.resetInput();
-    }
-    const digit = Number(e.getAttribute('value'));
-    calculator.executeInput(new SetValueCommand(digit));
-  })
+    digitsFunction(e)
+  });
 })
 
 //Delete Command
@@ -86,13 +95,14 @@ btnClear.addEventListener('click', () => {
 
 //AddCommand, SubtractCommand, MultiplyCommand, DivideCommand
 
-
 const btnAdd = document.getElementById('btnAdd');
 btnAdd.addEventListener('click', () => {
   if (calculator.pending === null ) {
     calculator.setValue();
     calculator.setPending('+');
     calculator.updateOperations(calculator.currentInput + ' + ')
+  } else {
+    executeFunction();
   }
 })
 
@@ -102,6 +112,8 @@ btnSubtract.addEventListener('click', () => {
     calculator.setValue();
     calculator.setPending('-');
     calculator.updateOperations(calculator.currentInput + ' - ')
+  } else {
+    executeFunction();
   }
 })
 
@@ -111,6 +123,8 @@ btnMultiply.addEventListener('click', () => {
     calculator.setValue();
     calculator.setPending('*');
     calculator.updateOperations(calculator.currentInput + ' * ')
+  } else {
+    executeFunction();
   }
 })
 
@@ -120,6 +134,8 @@ btnDivide.addEventListener('click', () => {
     calculator.setValue();
     calculator.setPending('/');
     calculator.updateOperations(calculator.currentInput + ' / ')
+  } else {
+    executeFunction();
   }
 })
 
@@ -127,25 +143,13 @@ btnDivide.addEventListener('click', () => {
 
 const btnEnter = document.getElementById('btnEnter');
 btnEnter.addEventListener('click', () => {
-  /*
-  switch(calculator.pending) {
-  case '+': calculator.execute(new AddCommand(calculator.currentInput));
-  case '-': calculator.execute(new SubtractCommand(calculator.currentInput));
-  case '*': calculator.execute(new MultiplyCommand(calculator.currentInput));
-  case '/': calculator.execute(new DivideCommand(calculator.currentInput));
-  } */
   executeFunction();
-  //calculator.execute(new AddCommand(calculator.currentInput));
-  //calculator.updateOperations(calculator.currentInput);
-  //console.log(calculator);
-  //console.log(calculator.history[0])
 })
 
 //Factorial
 
 const btnFactorial = document.getElementById('btnFactorial');
 btnFactorial.addEventListener('click', () => {
-  console.log(calculator.currentInput);
   calculator.executeInput(new FactorialCommand(calculator.currentInput));
 })
 
@@ -185,7 +189,13 @@ btnPower3.addEventListener('click', () => {
 //PowerYCommand
 const btnPowerY = document.getElementById('btnPowerY');
 btnPowerY.addEventListener('click', () => {
-  calculator.executeInput(new PowerYCommand(calculator.currentInput));
+  if (calculator.pending === null ) {
+    calculator.setValue();
+    calculator.setPending('^');
+    calculator.updateOperations(calculator.currentInput + ' ^ ')
+  } else {
+    executeFunction();
+  }  
 })
 
 //SquareRootCommand
@@ -223,7 +233,7 @@ btnPercentage.addEventListener('click', () => {
     executeFunction();
   }    
 })
-/*
+
 
 //M-buttons
 const btnMemoryClear = document.getElementById('btnMemoryClear');
@@ -231,9 +241,8 @@ const btnMemoryRecall = document.getElementById('btnMemoryRecall');
 const btnMemorySubtract = document.getElementById('btnMemorySubtract');
 const btnMemoryAdd = document.getElementById('btnMemoryAdd');
 
-//root and square operations
 
-//not implemented yet
+/* not implemented yet
 const btnLn = document.getElementById('btnLn');
 const btnLog10 = document.getElementById('btnLog10');
 const btnSin = document.getElementById('btnSin');
@@ -245,6 +254,7 @@ const btnDot = document.getElementById('btnDot');
 
 */
 
+/*
 document.addEventListener('keypress', function(e){
   alert(e.code);
   if (e.code === 'Digit0' || e.code === 'Numpad0') {
@@ -281,3 +291,5 @@ document.addEventListener('keypress', function(e){
     alert(true);
   }
 })
+
+*/

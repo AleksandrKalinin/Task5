@@ -12,10 +12,6 @@ export class TenPowerCommand {
   }
 
   undo(currentValue) {
-    let result = currentValue;
-    for (let i = 0; i < currentValue.toString().length - 1; i++) {
-      result /= 10;
-    }
-    return result;
+    return currentValue.toString().length - 1;
   }
 }

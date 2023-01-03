@@ -4,12 +4,10 @@ export class PowerYCommand {
   }
 
   execute(currentValue) {
-    console.log(this.value);
-    console.log(currentValue);
-    //return currentValue ** (1 / 3);
+    return this.value ** currentValue;
   }
 
   undo(currentValue) {
-    return currentValue - this.value;
+    return this.value;
   }
 }
