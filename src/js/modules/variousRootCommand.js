@@ -4,12 +4,10 @@ export class VariousRootCommand {
   }
 
   execute(currentValue) {
-    console.log(this.value);
-    console.log(currentValue);
-    //return currentValue ** (1 / 2)
+    return this.value ** (1 / currentValue)
   }
 
   undo(currentValue) {
-    return Math.round(currentValue * currentValue);
+    return this.value;
   }
 }

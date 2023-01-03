@@ -50,6 +50,9 @@ export class Calculator {
   clear() {
     this.history = [];
     this.value = 0;
+    this.currentInput = 0;
+    this.operations = '';
+    this.inputHistory = [];
   }
 
   resetInput() {
@@ -62,6 +65,10 @@ export class Calculator {
 
   updateOperations(val) {    
     this.operations += val;
+  }
+
+  resetOperations() {
+    this.operations = '';
   }
 
   consoleState() {

@@ -17,6 +17,8 @@ import { PowerYCommand } from './modules/powerYCommand';
 import { SquareRootCommand } from './modules/squareRootCommand';
 import { CubicRootCommand } from './modules/cubicRootCommand';
 import { VariousRootCommand } from './modules/variousRootCommand';
+import { PercentageCommand } from './modules/percentageCommand';
+
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
@@ -33,15 +35,24 @@ const calculator = new Proxy(calculatorObject, {
   }
 });
 
-//console.log(calculator);
-
-//calculator.execute(new AddCommand(10));
-//calculator.execute(new AddCommand(4));
-//calculator.execute(new MultiplyCommand(22));
-//console.log(calculator);
-//calculator.execute(new DivideCommand(13));
-//calculator.undo(new DivideCommand());
-//console.log(calculator.value);
+const executeFunction = () => {
+  switch(calculator.pending) {
+  case '+': calculator.executeInput(new AddCommand(calculator.value));
+    break;
+  case '-': calculator.executeInput(new SubtractCommand(calculator.value));
+    break;
+  case '*': calculator.executeInput(new MultiplyCommand(calculator.value));
+    break;
+  case '/': calculator.executeInput(new DivideCommand(calculator.value));
+    break;
+  case 'yroot': calculator.executeInput(new VariousRootCommand(calculator.value));
+    break;
+  case '%': calculator.executeInput(new PercentageCommand(calculator.value));
+    break;    
+  }
+  calculator.resetOperations();
+  calculator.setPending(null);
+}
 
 //Numbers listener
 const numbers = document.querySelectorAll('.button-number');
@@ -75,11 +86,8 @@ btnClear.addEventListener('click', () => {
 
 //AddCommand, SubtractCommand, MultiplyCommand, DivideCommand
 
-const btnAdd = document.getElementById('btnAdd');
-const btnSubtract = document.getElementById('btnSubtract');
-const btnMultiply = document.getElementById('btnMultiply');
-const btnDivide = document.getElementById('btnDivide');
 
+const btnAdd = document.getElementById('btnAdd');
 btnAdd.addEventListener('click', () => {
   if (calculator.pending === null ) {
     calculator.setValue();
@@ -88,6 +96,7 @@ btnAdd.addEventListener('click', () => {
   }
 })
 
+const btnSubtract = document.getElementById('btnSubtract');
 btnSubtract.addEventListener('click', () => {
   if (calculator.pending === null ) {
     calculator.setValue();
@@ -96,6 +105,7 @@ btnSubtract.addEventListener('click', () => {
   }
 })
 
+const btnMultiply = document.getElementById('btnMultiply');
 btnMultiply.addEventListener('click', () => {
   if (calculator.pending === null ) {
     calculator.setValue();
@@ -104,6 +114,7 @@ btnMultiply.addEventListener('click', () => {
   }
 })
 
+const btnDivide = document.getElementById('btnDivide');
 btnDivide.addEventListener('click', () => {
   if (calculator.pending === null ) {
     calculator.setValue();
@@ -123,10 +134,11 @@ btnEnter.addEventListener('click', () => {
   case '*': calculator.execute(new MultiplyCommand(calculator.currentInput));
   case '/': calculator.execute(new DivideCommand(calculator.currentInput));
   } */
-  calculator.execute(new AddCommand(calculator.currentInput));
-  calculator.updateOperations(calculator.currentInput);
-  console.log(calculator);
-  console.log(calculator.history[0])
+  executeFunction();
+  //calculator.execute(new AddCommand(calculator.currentInput));
+  //calculator.updateOperations(calculator.currentInput);
+  //console.log(calculator);
+  //console.log(calculator.history[0])
 })
 
 //Factorial
@@ -188,11 +200,29 @@ btnCubicRoot.addEventListener('click', () => {
   calculator.executeInput(new CubicRootCommand(calculator.currentInput));
 })
 
+//VariousRootCommand
 const btnYRoot = document.getElementById('btnYRoot');
 btnYRoot.addEventListener('click', () => {
-  calculator.executeInput(new VariousRootCommand(calculator.currentInput));
+  if (calculator.pending === null ) {
+    calculator.setValue();
+    calculator.setPending('yroot');
+    calculator.updateOperations(calculator.currentInput + ' yroot ')
+  } else {
+    executeFunction();
+  }  
+  //calculator.executeInput(new VariousRootCommand(calculator.currentInput));
 })
 
+const btnPercentage = document.getElementById('btnPercentage');
+btnPercentage.addEventListener('click', () => {
+  if (calculator.pending === null ) {
+    calculator.setValue();
+    calculator.setPending('%');
+    calculator.updateOperations(calculator.currentInput + ' % ')
+  } else {
+    executeFunction();
+  }    
+})
 /*
 
 //M-buttons

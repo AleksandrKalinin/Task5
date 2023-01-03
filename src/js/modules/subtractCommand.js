@@ -4,10 +4,10 @@ export class SubtractCommand {
   }
 
   execute(currentValue) {
-    return currentValue - this.value;
+    return this.value - currentValue;
   }
 
   undo(currentValue) {
-    return currentValue + this.value;
+    return this.value + currentValue;
   }
 }

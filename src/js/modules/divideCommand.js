@@ -5,12 +5,11 @@ export class DivideCommand {
 
   execute(currentValue) {
     if (this.value !== 0) {
-      return currentValue / this.value;
+      return this.value / currentValue;
     }
-    //return currentValue;
   }
 
   undo(currentValue) {
-    return currentValue * this.value;
+    return this.value + currentValue;
   }
 }
