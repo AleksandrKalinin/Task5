@@ -7,7 +7,7 @@ import { MultiplyCommand } from './modules/multiplyCommand';
 import { DivideCommand } from './modules/divideCommand';
 import { SetValueCommand } from './modules/setValueCommand';
 import { ResetCommand } from './modules/resetCommand';
-
+import { FactorialCommand } from './modules/factorialCommand';
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
@@ -24,7 +24,7 @@ const calculator = new Proxy(calculatorObject, {
   }
 });
 
-console.log(calculator);
+//console.log(calculator);
 
 //calculator.execute(new AddCommand(10));
 //calculator.execute(new AddCommand(4));
@@ -54,15 +54,15 @@ numbers.forEach((e) => {
       calculator.resetInput();
     }
     const digit = Number(e.getAttribute('value'));
-    calculator.setInput(new SetValueCommand(digit));
+    calculator.executeInput(new SetValueCommand(digit));
   })
 })
 
 const btnDelete = document.getElementById('btnDelete');
 
 btnDelete.addEventListener('click', () => {
-  if (calculator.value !== 0) {
-    calculator.undo(new SetValueCommand(calculator.value));
+  if (calculator.currentInput !== 0) {
+    calculator.undoInput(new SetValueCommand(calculator.currentInput));
   }
 })
 
@@ -90,6 +90,16 @@ btnEnter.addEventListener('click', () => {
   calculator.execute(new AddCommand(calculator.currentInput));
   calculator.updateOperations(calculator.currentInput);
 })
+
+const btnFactorial = document.getElementById('btnFactorial');
+btnFactorial.addEventListener('click', () => {
+  console.log(calculator.currentInput);
+  calculator.executeInput(new FactorialCommand(calculator.currentInput));
+})
+
+//calculator.executeInput(new FactorialCommand(5));
+//calculator.undoInput(new FactorialCommand());
+
 
 function router() {
   switch(calculator.pending) {

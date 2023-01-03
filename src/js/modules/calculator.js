@@ -33,7 +33,7 @@ export class Calculator {
     this.value = command.undo(this.value);
   }
 
-  setInput(command) {
+  executeInput(command) {
     this.currentInput = command.execute(this.currentInput);
     this.inputHistory.push(command);
   }
@@ -65,7 +65,7 @@ export class Calculator {
   }
 
   consoleState() {
-    console.log('state')
+    //console.log('state')
   }
 
   /*
