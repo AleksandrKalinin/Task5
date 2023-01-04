@@ -18,6 +18,7 @@
 			  <span class="slider round"></span>
 			</label>					
 		</div>
+		<button id="history">History</button>
 		<div class="calculator">
 			<div class="calculator__display calculator-display">
 				<div class="calculator-display__operations" id="displayOperations"></div>
@@ -31,28 +32,28 @@
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnMemorySubtract">M-</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnMemoryRecall">MR</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnMemoryClear">MC</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnDelete">del</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnClear">clear</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnCE">CE</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnC">C</span>
 				</div>
 				<div class="calculator__row">
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnPowerY">x<sup class="sup-element"><small>y</small></sup></span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnYRoot"><sup class="sup-element"><small>y</small></sup>&#8730;</span>					
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="^" id="btnPowerY">x<sup class="sup-element"><small>y</small></sup></span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="yroot" id="btnYRoot"><sup class="sup-element"><small>y</small></sup>&#8730;</span>					
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnSquareRoot">&#8730;</span>					
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="7" id="btn7">7</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="8" id="btn8">8</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="9" id="btn9">9</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnMod">Mod</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="mod" id="btnMod">Mod</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnReverseSign">+ -</span>					
 				</div>
 				<div class="calculator__row">
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnPower2">x&#178;</span>				
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnPercentage">%</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="%" id="btnPercentage">%</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnCubicRoot">&#8731;</span>				
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="4" id="btn4">4</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="5" id="btn5">5</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="6" id="btn6">6</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnMultiply">x</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnDivide">/</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="*" id="btnMultiply">x</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="/" id="btnDivide">/</span>
 				</div>
 				<div class="calculator__row">
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnPower3">x&#179;</span>
@@ -61,8 +62,8 @@
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="1" id="btn1">1</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="2" id="btn2">2</span>
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_light button-number" value="3" id="btn3">3</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnAdd">+</span>
-					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnSubtract">-</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="+" id="btnAdd">+</span>
+					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium two__args" value="-" id="btnSubtract">-</span>
 				</div>
 				<div class="calculator__row">
 					<span class="calculator__button calculator-button calculator-button_avg calculator-button_medium" id="btnTenPowerX">10<sup class="sup-element"><small>x</small></sup></span>

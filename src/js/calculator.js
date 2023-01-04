@@ -11,21 +11,6 @@ export class Calculator {
   execute(command) {
     this.value = command.execute(this.value);
     this.history.push(command);
-    //console.log(this.history);
-    switch(command.constructor.name) {
-    case 'AddCommand': 
-      //this.operations.push('+');
-      break;
-    case 'SubtractCommand': 
-      //this.operations.push('-');
-      break;
-    case 'MultiplyCommand': 
-      //this.operations.push('*');
-      break;
-    case 'DivideCommand': 
-      //this.operations.push('/');
-      break;
-    }
   }
 
   undo() {
@@ -35,7 +20,11 @@ export class Calculator {
 
   executeInput(command) {
     this.currentInput = command.execute(this.currentInput);
-    this.inputHistory.push(command);
+    if (command.constructor.name === 'SetValueCommand') {
+      this.inputHistory.push(command);
+    } else {
+      this.history.push(command);
+    }
   }
 
   undoInput() {

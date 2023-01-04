@@ -21,6 +21,11 @@ import {
   PercentageCommand 
 } from './commands';
 
+//M-buttons
+const btnMemoryClear = document.getElementById('btnMemoryClear');
+const btnMemoryRecall = document.getElementById('btnMemoryRecall');
+const btnMemorySubtract = document.getElementById('btnMemorySubtract');
+const btnMemoryAdd = document.getElementById('btnMemoryAdd');
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
@@ -37,26 +42,24 @@ const calculator = new Proxy(calculatorObject, {
   }
 });
 
-const executeFunction = () => {
-  switch(calculator.pending) {
-  case '+': calculator.executeInput(new AddCommand(calculator.value));
-    break;
-  case '-': calculator.executeInput(new SubtractCommand(calculator.value));
-    break;
-  case '*': calculator.executeInput(new MultiplyCommand(calculator.value));
-    break;
-  case '/': calculator.executeInput(new DivideCommand(calculator.value));
-    break;
-  case 'yroot': calculator.executeInput(new VariousRootCommand(calculator.value));
-    break;
-  case '%': calculator.executeInput(new PercentageCommand(calculator.value));
-    break;
-  case '^': calculator.executeInput(new PowerYCommand(calculator.value));  
-    break;    
+const calculateResult = () => {
+  if (calculator.pending !== null) {
+    calculator.updateOperations(calculator.currentInput);
+    calculator.executeInput(calculator.pending);
+    calculator.setPending(null);
+    calculator.setValue(calculator.currentInput);
   }
-  calculator.resetOperations();
-  calculator.setPending(null);
 }
+
+const history = document.getElementById('history');
+history.addEventListener('click', () => {
+  console.log(calculator);
+})
+
+const btnEnter = document.getElementById('btnEnter');
+btnEnter.addEventListener('click', () => {
+  calculateResult();
+})
 
 //Digits Numbers listener
 
@@ -65,7 +68,13 @@ const digits = document.querySelectorAll('.button-number');
 function digitsFunction(e) {
   if (calculator.pending !== null && calculator.value === calculator.currentInput) {
     calculator.resetInput();
-  }
+  } 
+  if (calculator.pending === null && 
+      calculator.value === calculator.currentInput && 
+      calculator.history.length !== 0) {
+    calculator.resetInput();
+    calculator.clear();
+  }   
   const digit = Number(e.getAttribute('value'));
   calculator.executeInput(new SetValueCommand(digit));  
 }
@@ -76,75 +85,74 @@ digits.forEach((e) => {
   });
 })
 
+//Two arguments commands
+
+const args = document.querySelectorAll('.two__args');
+
+function getOperator(val) {
+  let operation = null;
+  switch(val) {
+  case '+': operation = new AddCommand(calculator.value);
+    break;
+  case '-': operation = new SubtractCommand(calculator.value);
+    break;
+  case '*': operation = new MultiplyCommand(calculator.value);
+    break;
+  case '/': operation = new DivideCommand(calculator.value);
+    break;
+  case 'yroot': operation = new VariousRootCommand(calculator.value);
+    break;
+  case '^': operation = new PowerYCommand(calculator.value);
+    break;
+  case '%': operation = new PercentageCommand(calculator.value);
+    break;                        
+  }
+  return operation;   
+}
+
+function operationsHandler(e) {
+  const val = e.getAttribute('value');
+  let command;
+  if (calculator.pending === null) {
+    calculator.setValue();
+    command = getOperator(val)
+    calculator.setPending(command);
+  } else {
+    calculateResult();
+    command = getOperator(val);
+    calculator.setPending(command);
+  }
+  if (calculator.pending !== null && calculator.history.length !== 0) {
+    calculator.updateOperations(` ${val} `);     
+  }
+  if (calculator.pending !== null && calculator.history.length === 0) {
+    calculator.updateOperations(calculator.currentInput); 
+    calculator.updateOperations(` ${val} `);     
+  } 
+}
+
+args.forEach((e) => {
+  e.addEventListener('click', () => {
+    operationsHandler(e);
+  })
+})
+
 //Delete Command
 
-const btnDelete = document.getElementById('btnDelete');
-btnDelete.addEventListener('click', () => {
+const btnCE = document.getElementById('btnCE');
+btnCE.addEventListener('click', () => {
   if (calculator.currentInput !== 0) {
     calculator.undoInput(new SetValueCommand(calculator.currentInput));
   }
 })
 
-
 //ClearCommand
 
-const btnClear = document.getElementById('btnClear');
-btnClear.addEventListener('click', () => {
+const btnC = document.getElementById('btnC');
+btnC.addEventListener('click', () => {
   calculator.clear();
 });
 
-//AddCommand, SubtractCommand, MultiplyCommand, DivideCommand
-
-const btnAdd = document.getElementById('btnAdd');
-btnAdd.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('+');
-    calculator.updateOperations(calculator.currentInput + ' + ')
-  } else {
-    executeFunction();
-  }
-})
-
-const btnSubtract = document.getElementById('btnSubtract');
-btnSubtract.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('-');
-    calculator.updateOperations(calculator.currentInput + ' - ')
-  } else {
-    executeFunction();
-  }
-})
-
-const btnMultiply = document.getElementById('btnMultiply');
-btnMultiply.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('*');
-    calculator.updateOperations(calculator.currentInput + ' * ')
-  } else {
-    executeFunction();
-  }
-})
-
-const btnDivide = document.getElementById('btnDivide');
-btnDivide.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('/');
-    calculator.updateOperations(calculator.currentInput + ' / ')
-  } else {
-    executeFunction();
-  }
-})
-
-//Enter
-
-const btnEnter = document.getElementById('btnEnter');
-btnEnter.addEventListener('click', () => {
-  executeFunction();
-})
 
 //Factorial
 
@@ -177,25 +185,15 @@ btnTenPowerX.addEventListener('click', () => {
 //PowerTwoCommand
 const btnPower2 = document.getElementById('btnPower2');
 btnPower2.addEventListener('click', () => {
-  calculator.executeInput(new PowerTwoCommand(calculator.currentInput));
+  const command = new PowerTwoCommand(calculator.currentInput);
+  calculator.executeInput(command);
+  calculator.updateOperations(calculator.currentInput);
 })
 
 //PowerThreeCommand
 const btnPower3 = document.getElementById('btnPower3');
 btnPower3.addEventListener('click', () => {
   calculator.executeInput(new PowerThreeCommand(calculator.currentInput));
-})
-
-//PowerYCommand
-const btnPowerY = document.getElementById('btnPowerY');
-btnPowerY.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('^');
-    calculator.updateOperations(calculator.currentInput + ' ^ ')
-  } else {
-    executeFunction();
-  }  
 })
 
 //SquareRootCommand
@@ -209,87 +207,3 @@ const btnCubicRoot = document.getElementById('btnCubicRoot');
 btnCubicRoot.addEventListener('click', () => {
   calculator.executeInput(new CubicRootCommand(calculator.currentInput));
 })
-
-//VariousRootCommand
-const btnYRoot = document.getElementById('btnYRoot');
-btnYRoot.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('yroot');
-    calculator.updateOperations(calculator.currentInput + ' yroot ')
-  } else {
-    executeFunction();
-  }  
-  //calculator.executeInput(new VariousRootCommand(calculator.currentInput));
-})
-
-const btnPercentage = document.getElementById('btnPercentage');
-btnPercentage.addEventListener('click', () => {
-  if (calculator.pending === null ) {
-    calculator.setValue();
-    calculator.setPending('%');
-    calculator.updateOperations(calculator.currentInput + ' % ')
-  } else {
-    executeFunction();
-  }    
-})
-
-
-//M-buttons
-const btnMemoryClear = document.getElementById('btnMemoryClear');
-const btnMemoryRecall = document.getElementById('btnMemoryRecall');
-const btnMemorySubtract = document.getElementById('btnMemorySubtract');
-const btnMemoryAdd = document.getElementById('btnMemoryAdd');
-
-
-/* not implemented yet
-const btnLn = document.getElementById('btnLn');
-const btnLog10 = document.getElementById('btnLog10');
-const btnSin = document.getElementById('btnSin');
-const btnCos = document.getElementById('btnCos');
-const btnTan = document.getElementById('btnTan');
-const btnLeftBrace = document.getElementById('btnLeftBrace');
-const btnRightBrace = document.getElementById('btnRightBrace');
-const btnDot = document.getElementById('btnDot');
-
-*/
-
-/*
-document.addEventListener('keypress', function(e){
-  alert(e.code);
-  if (e.code === 'Digit0' || e.code === 'Numpad0') {
-    alert(true);
-  } else if (e.code === 'Digit0' || e.code === 'Numpad0') {
-    alert(true);
-  } else if (e.code === 'Digit1' || e.code === 'Numpad1') {
-    alert(true);
-  } else if (e.code === 'Digit2' || e.code === 'Numpad2') {
-    alert(true);
-  } else if (e.code === 'Digit3' || e.code === 'Numpad3') {
-    alert(true);
-  } else if (e.code === 'Digit4' || e.code === 'Numpad4') {
-    alert(true);
-  } else if (e.code === 'Digit5' || e.code === 'Numpad5') {
-    alert(true);
-  } else if (e.code === 'Digit6' || e.code === 'Numpad6') {
-    alert(true);
-  } else if (e.code === 'Digit7' || e.code === 'Numpad7') {
-    alert(true);
-  } else if (e.code === 'Digit8' || e.code === 'Numpad8') {
-    alert(true);
-  } else if (e.code === 'Digit9' || e.code === 'Numpad9') {
-    alert(true);
-  } else if (e.code === 'Minus' || e.code === 'NumpadSubtract') {
-    alert(true);
-  } else if (e.code === 'Plus' || e.code === 'NumpadAdd') {
-    alert(true);
-  } else if (e.code === 'NumpadMultiply') {
-    alert(true);
-  } else if (e.code === 'NumpadDivide') {
-    alert(true);    
-  } else if (e.code === 'NumpadDecimal') {
-    alert(true);
-  }
-})
-
-*/
