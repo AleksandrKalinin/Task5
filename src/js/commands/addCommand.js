@@ -4,8 +4,6 @@ export class AddCommand {
   }
 
   execute(currentValue) {
-    console.log(currentValue);
-    console.log(this.value);
     return currentValue + this.value;
   }
 

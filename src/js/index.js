@@ -21,7 +21,7 @@ import {
   PercentageCommand 
 } from './commands';
 
-//M-buttons
+//M-buttons(not implemented now)
 const btnMemoryClear = document.getElementById('btnMemoryClear');
 const btnMemoryRecall = document.getElementById('btnMemoryRecall');
 const btnMemorySubtract = document.getElementById('btnMemorySubtract');
@@ -30,38 +30,58 @@ const btnMemoryAdd = document.getElementById('btnMemoryAdd');
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
 
-const calculatorObject = new Calculator(0);
 
+//calculator object initialization
+const calculatorObject = new Calculator(0);
 const calculator = new Proxy(calculatorObject, {
   set: function (target, key, value) {
     target[key] = value;
-    console.log(target);
     current.innerText = calculator.currentInput;
     operations.innerText = calculator.operations;     
     return true;
   }
 });
 
+//Delete Command
+
+const btnCE = document.getElementById('btnCE');
+btnCE.addEventListener('click', () => {
+  if (calculator.currentInput !== 0) {
+    calculator.undoInput(new SetValueCommand(calculator.currentInput));
+  }
+})
+
+//ClearCommand
+
+const btnC = document.getElementById('btnC');
+btnC.addEventListener('click', () => {
+  calculator.clear();
+});
+
+//ReverseSign Command
+
+const btnReverseSign = document.getElementById('btnReverseSign');
+btnReverseSign.addEventListener('click', () => {
+  calculator.executeInput(new ReverseSignCommand());
+}) 
+
+//Calculating result
+
 const calculateResult = () => {
   if (calculator.pending !== null) {
+    calculator.setValue();
     calculator.updateOperations(calculator.currentInput);
     calculator.executeInput(calculator.pending);
     calculator.setPending(null);
-    calculator.setValue(calculator.currentInput);
   }
 }
-
-const history = document.getElementById('history');
-history.addEventListener('click', () => {
-  console.log(calculator);
-})
 
 const btnEnter = document.getElementById('btnEnter');
 btnEnter.addEventListener('click', () => {
   calculateResult();
 })
 
-//Digits Numbers listener
+//Listener for 0 - 9 digits
 
 const digits = document.querySelectorAll('.button-number');
 
@@ -85,9 +105,26 @@ digits.forEach((e) => {
   });
 })
 
-//Two arguments commands
+//Function for processing operations with one argument
 
-const args = document.querySelectorAll('.two__args');
+const oneArgs = document.querySelectorAll('.one__args');
+
+function oneArgOperations(e) {
+  const command = getOperator(e.getAttribute('value'));
+  calculator.executeInput(command);
+  calculator.resetOperations('');
+  calculator.updateOperations(calculator.currentInput);
+}
+
+oneArgs.forEach((e) => {
+  e.addEventListener('click', () => {
+    oneArgOperations(e);
+  })
+})
+
+//Function for processing operations with two arguments
+
+const twoArgs = document.querySelectorAll('.two__args');
 
 function getOperator(val) {
   let operation = null;
@@ -105,105 +142,62 @@ function getOperator(val) {
   case '^': operation = new PowerYCommand(calculator.value);
     break;
   case '%': operation = new PercentageCommand(calculator.value);
-    break;                        
+    break;
+  case 'cRoot': operation = new CubicRootCommand(calculator.value);
+    break;
+  case 'sRoot': operation = new SquareRootCommand(calculator.value);
+    break;
+  case '!': operation = new FactorialCommand(calculator.value);
+    break;
+  case 'power2': operation = new PowerTwoCommand(calculator.value);
+    break;
+  case 'power3': operation = new PowerThreeCommand(calculator.value);
+    break;
+  case 'powerTen': operation = new TenPowerCommand(calculator.value);
+    break;
+  case 'divideX': operation = new DivideOneByValueCommand(calculator.value);
+    break;                         
   }
   return operation;   
 }
 
-function operationsHandler(e) {
+function twoArgsOperations(e) {
   const val = e.getAttribute('value');
   let command;
+  let flag = false;
   if (calculator.pending === null) {
     calculator.setValue();
-    command = getOperator(val)
+    command = getOperator(val)    
     calculator.setPending(command);
-  } else {
-    calculateResult();
+  } else if (calculator.pending !== null || calculator.history.length === 0){
     command = getOperator(val);
-    calculator.setPending(command);
+    if (calculator.pending.constructor.name !== command.constructor.name) {
+      flag = true;
+      calculator.setPending(command);
+    } else {
+      calculateResult();    
+      calculator.setPending(command);
+    }    
   }
-  if (calculator.pending !== null && calculator.history.length !== 0) {
-    calculator.updateOperations(` ${val} `);     
+  if (calculator.pending !== null) { 
+    if (flag) {
+      const operations = calculator.operations;
+      const trimmed = operations.slice(0, -5);
+      calculator.resetOperations();
+      calculator.updateOperations(trimmed);      
+    }   
+    if (calculator.history.length !== 0) {
+      calculator.updateOperations(` ${val} `);     
+    } else {
+      calculator.updateOperations(calculator.currentInput); 
+      calculator.updateOperations(` ${val} `);       
+    } 
   }
-  if (calculator.pending !== null && calculator.history.length === 0) {
-    calculator.updateOperations(calculator.currentInput); 
-    calculator.updateOperations(` ${val} `);     
-  } 
 }
 
-args.forEach((e) => {
+twoArgs.forEach((e) => {
   e.addEventListener('click', () => {
-    operationsHandler(e);
+    twoArgsOperations(e);
   })
 })
 
-//Delete Command
-
-const btnCE = document.getElementById('btnCE');
-btnCE.addEventListener('click', () => {
-  if (calculator.currentInput !== 0) {
-    calculator.undoInput(new SetValueCommand(calculator.currentInput));
-  }
-})
-
-//ClearCommand
-
-const btnC = document.getElementById('btnC');
-btnC.addEventListener('click', () => {
-  calculator.clear();
-});
-
-
-//Factorial
-
-const btnFactorial = document.getElementById('btnFactorial');
-btnFactorial.addEventListener('click', () => {
-  calculator.executeInput(new FactorialCommand(calculator.currentInput));
-})
-
-//ReverseSign Command
-
-const btnReverseSign = document.getElementById('btnReverseSign');
-btnReverseSign.addEventListener('click', () => {
-  calculator.executeInput(new ReverseSignCommand());
-}) 
-
-
-//DivideOneByValueCOmmand
-
-const btnDivideOneByValue = document.getElementById('btnDivideOneByValue');
-btnDivideOneByValue.addEventListener('click', () => {
-  calculator.executeInput(new DivideOneByValueCommand(calculator.currentInput));
-})
-
-//TenPowerX delete
-const btnTenPowerX = document.getElementById('btnTenPowerX');
-btnTenPowerX.addEventListener('click', () => {
-  calculator.executeInput(new TenPowerCommand(calculator.currentInput));
-})
-
-//PowerTwoCommand
-const btnPower2 = document.getElementById('btnPower2');
-btnPower2.addEventListener('click', () => {
-  const command = new PowerTwoCommand(calculator.currentInput);
-  calculator.executeInput(command);
-  calculator.updateOperations(calculator.currentInput);
-})
-
-//PowerThreeCommand
-const btnPower3 = document.getElementById('btnPower3');
-btnPower3.addEventListener('click', () => {
-  calculator.executeInput(new PowerThreeCommand(calculator.currentInput));
-})
-
-//SquareRootCommand
-const btnSquareRoot = document.getElementById('btnSquareRoot');
-btnSquareRoot.addEventListener('click', () => {
-  calculator.executeInput(new SquareRootCommand(calculator.currentInput));
-})
-
-//CubicRootCommand
-const btnCubicRoot = document.getElementById('btnCubicRoot');
-btnCubicRoot.addEventListener('click', () => {
-  calculator.executeInput(new CubicRootCommand(calculator.currentInput));
-})

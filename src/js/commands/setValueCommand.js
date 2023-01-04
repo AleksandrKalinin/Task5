@@ -13,8 +13,6 @@ export class SetValueCommand {
   }
 
   undo(currentValue) {
-    console.log(this.value);
-    console.log(currentValue);
     if (currentValue.toString().length === 1) {
       return 0;
     } else {
