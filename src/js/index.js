@@ -62,7 +62,7 @@ btnC.addEventListener('click', () => {
 
 const btnReverseSign = document.getElementById('btnReverseSign');
 btnReverseSign.addEventListener('click', () => {
-  calculator.executeInput(new ReverseSignCommand());
+  calculator.execute(new ReverseSignCommand());
 }) 
 
 //Calculating result
@@ -71,7 +71,7 @@ const calculateResult = () => {
   if (calculator.pending !== null) {
     calculator.setValue();
     calculator.updateOperations(calculator.currentInput);
-    calculator.executeInput(calculator.pending);
+    calculator.execute(calculator.pending);
     calculator.setPending(null);
   }
 }
@@ -96,7 +96,7 @@ function digitsFunction(e) {
     calculator.clear();
   }   
   const digit = Number(e.getAttribute('value'));
-  calculator.executeInput(new SetValueCommand(digit));  
+  calculator.execute(new SetValueCommand(digit));  
 }
 
 digits.forEach((e) => {
@@ -111,7 +111,7 @@ const oneArgs = document.querySelectorAll('.one__args');
 
 function oneArgOperations(e) {
   const command = getOperator(e.getAttribute('value'));
-  calculator.executeInput(command);
+  calculator.execute(command);
   calculator.resetOperations('');
   calculator.updateOperations(calculator.currentInput);
 }
