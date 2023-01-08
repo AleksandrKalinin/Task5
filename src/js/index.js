@@ -25,27 +25,22 @@ import {
   MemorySubtractCommand 
 } from './commands';
 
-//M-buttons(not implemented now)
-const btnMemoryClear = document.getElementById('btnMemoryClear');
-const btnMemoryRecall = document.getElementById('btnMemoryRecall');
-const btnMemorySubtract = document.getElementById('btnMemorySubtract');
-const btnMemoryAdd = document.getElementById('btnMemoryAdd');
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
 
 
-//calculator object initialization
+//Calculator object initialization
 const calculatorObject = new Calculator(0);
 const calculator = new Proxy(calculatorObject, {
   set: function (target, key, value) {
     target[key] = value;
-    console.log(target);
     current.innerText = calculator.currentValue;
     operations.innerText = calculator.operations;     
     return true;
   }
 });
+
 
 //Checking dividing by zero
 function checkForZero(target, commandName) {
@@ -55,6 +50,14 @@ function checkForZero(target, commandName) {
     }
   }   
 }
+
+
+//Memory buttons functionality
+
+const btnMemoryClear = document.getElementById('btnMemoryClear');
+const btnMemoryRecall = document.getElementById('btnMemoryRecall');
+const btnMemorySubtract = document.getElementById('btnMemorySubtract');
+const btnMemoryAdd = document.getElementById('btnMemoryAdd');
 
 btnMemoryClear.addEventListener('click', () => {
   calculator.clearMemory();
@@ -72,6 +75,7 @@ btnMemorySubtract.addEventListener('click', () => {
   calculator.executeMemory(new MemorySubtractCommand(calculator.currentValue));
 })
 
+
 //Delete Command
 
 const btnCE = document.getElementById('btnCE');
@@ -81,6 +85,7 @@ btnCE.addEventListener('click', () => {
   }
 })
 
+
 //ClearCommand
 
 const btnC = document.getElementById('btnC');
@@ -88,12 +93,14 @@ btnC.addEventListener('click', () => {
   calculator.clear();
 });
 
+
 //ReverseSign Command
 
 const btnReverseSign = document.getElementById('btnReverseSign');
 btnReverseSign.addEventListener('click', () => {
   calculator.execute(new ReverseSignCommand());
 }) 
+
 
 //Calculating result
 
@@ -126,6 +133,7 @@ btnReverse.addEventListener('click', () => {
   }
 })
 
+
 //Listener for 0 - 9 digits
 
 const digits = document.querySelectorAll('.button-number');
@@ -133,7 +141,6 @@ const digits = document.querySelectorAll('.button-number');
 function digitsFunction(e) {
   console.log('calculator', calculator);
   if (calculator.pending !== null && calculator.value === calculator.currentValue) {
-    console.log('firing');
     calculator.resetInput();
   } 
   if (calculator.pending === null && 
@@ -151,6 +158,7 @@ digits.forEach((e) => {
     digitsFunction(e)
   });
 })
+
 
 //Function for processing operations with one argument
 
@@ -230,30 +238,10 @@ function twoArgsOperations(e) {
       calculator.updateOperations(`${trimmed} ${val} `);
     }
   }
-
-  /*
-  if (calculator.pending !== null) { 
-    if (flag) {
-      const operations = calculator.operations;
-      const trimmed = operations.slice(0, -5);
-      calculator.resetOperations();
-      calculator.updateOperations(trimmed);      
-    }   
-    if (calculator.history.length !== 0) {
-      calculator.updateOperations(` ${val} `);     
-    } else {
-      calculator.updateOperations(calculator.currentInput); 
-      calculator.updateOperations(` ${val} `);       
-    } 
-  }
-  */
-
-
 }
 
 twoArgs.forEach((e) => {
   e.addEventListener('click', () => {
     twoArgsOperations(e);
   })
-})
-
+});
