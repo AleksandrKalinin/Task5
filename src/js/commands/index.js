@@ -15,3 +15,7 @@ export * from './squareRootCommand';
 export * from './cubicRootCommand';
 export * from './variousRootCommand';
 export * from './percentageCommand';
+export * from './memoryAddCommand';
+export * from './memorySubtractCommand';
+export * from './memoryClearCommand';
+export * from './memoryRecallCommand';

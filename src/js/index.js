@@ -18,7 +18,11 @@ import {
   SquareRootCommand, 
   CubicRootCommand, 
   VariousRootCommand, 
-  PercentageCommand 
+  PercentageCommand,
+  MemoryClearCommand,
+  MemoryRecallCommand,
+  MemoryAddCommand,
+  MemorySubtractCommand 
 } from './commands';
 
 //M-buttons(not implemented now)
@@ -36,18 +40,44 @@ const calculatorObject = new Calculator(0);
 const calculator = new Proxy(calculatorObject, {
   set: function (target, key, value) {
     target[key] = value;
-    current.innerText = calculator.currentInput;
+    console.log(target);
+    current.innerText = calculator.currentValue;
     operations.innerText = calculator.operations;     
     return true;
   }
 });
 
+//Checking dividing by zero
+function checkForZero(target, commandName) {
+  if (calculator.currentValue === 0) {
+    if (target === commandName) {
+      setTimeout(() => calculator.clear(), 1000)
+    }
+  }   
+}
+
+btnMemoryClear.addEventListener('click', () => {
+  calculator.clearMemory();
+})
+
+btnMemoryRecall.addEventListener('click', () => {
+  calculator.recallMemory();
+})
+
+btnMemoryAdd.addEventListener('click', () => {
+  calculator.executeMemory(new MemoryAddCommand(calculator.currentValue));
+})
+
+btnMemorySubtract.addEventListener('click', () => {
+  calculator.executeMemory(new MemorySubtractCommand(calculator.currentValue));
+})
+
 //Delete Command
 
 const btnCE = document.getElementById('btnCE');
 btnCE.addEventListener('click', () => {
-  if (calculator.currentInput !== 0) {
-    calculator.undoInput(new SetValueCommand(calculator.currentInput));
+  if (calculator.currentValue !== 0) {
+    calculator.undoInput(new SetValueCommand(calculator.currentValue));
   }
 })
 
@@ -67,18 +97,33 @@ btnReverseSign.addEventListener('click', () => {
 
 //Calculating result
 
-const calculateResult = () => {
+const calculateResult = (nextCommand) => {
+  checkForZero(calculator?.pending?.constructor.name, 'DivideCommand')
   if (calculator.pending !== null) {
-    calculator.updateOperations(calculator.currentInput);
     calculator.execute(calculator.pending);
     calculator.setValue();
-    calculator.setPending(null);
+    calculator.resetOperations('')
+    calculator.updateOperations(calculator.currentValue);
+    calculator.twoValues = 1;
+    if (nextCommand !== null) {
+      nextCommand.value = calculator.currentValue;
+      calculator.setPending(nextCommand);
+    } else {
+      calculator.setPending(null);
+    }
   }
 }
 
-const btnEnter = document.getElementById('btnEnter');
-btnEnter.addEventListener('click', () => {
-  calculateResult();
+const btnResult = document.getElementById('btnResult');
+btnResult.addEventListener('click', () => {
+  calculateResult(null);
+})
+
+const btnReverse = document.getElementById('btnReverse');
+btnReverse.addEventListener('click', () => {
+  if (calculator.currentValue !== 0) {
+    calculator.undoInput(new SetValueCommand(calculator.currentValue));
+  }
 })
 
 //Listener for 0 - 9 digits
@@ -86,11 +131,13 @@ btnEnter.addEventListener('click', () => {
 const digits = document.querySelectorAll('.button-number');
 
 function digitsFunction(e) {
-  if (calculator.pending !== null && calculator.value === calculator.currentInput) {
+  console.log('calculator', calculator);
+  if (calculator.pending !== null && calculator.value === calculator.currentValue) {
+    console.log('firing');
     calculator.resetInput();
   } 
   if (calculator.pending === null && 
-      calculator.value === calculator.currentInput && 
+      calculator.value === calculator.currentValue && 
       calculator.history.length !== 0) {
     calculator.resetInput();
     calculator.clear();
@@ -111,9 +158,10 @@ const oneArgs = document.querySelectorAll('.one__args');
 
 function oneArgOperations(e) {
   const command = getOperator(e.getAttribute('value'));
+  checkForZero(command.constructor.name, 'DivideOneByValueCommand');
   calculator.execute(command);
   calculator.resetOperations('');
-  calculator.updateOperations(calculator.currentInput);
+  calculator.updateOperations(calculator.currentValue);
 }
 
 oneArgs.forEach((e) => {
@@ -122,6 +170,7 @@ oneArgs.forEach((e) => {
   })
 })
 
+
 //Function for processing operations with two arguments
 
 const twoArgs = document.querySelectorAll('.two__args');
@@ -129,13 +178,13 @@ const twoArgs = document.querySelectorAll('.two__args');
 function getOperator(val) {
   let operation = null;
   switch(val) {
-  case '+': operation = new AddCommand(calculator.value);
+  case '+': operation = new AddCommand(calculator.currentValue);
     break;
-  case '-': operation = new SubtractCommand(calculator.value);
+  case '-': operation = new SubtractCommand(calculator.currentValue);
     break;
-  case '*': operation = new MultiplyCommand(calculator.value);
+  case '*': operation = new MultiplyCommand(calculator.currentValue);
     break;
-  case '/': operation = new DivideCommand(calculator.value);
+  case '/': operation = new DivideCommand(calculator.currentValue);
     break;
   case 'yroot': operation = new VariousRootCommand(calculator.value);
     break;
@@ -163,22 +212,26 @@ function getOperator(val) {
 
 function twoArgsOperations(e) {
   const val = e.getAttribute('value');
-  let command;
-  let flag = false;
+  const command = getOperator(val);
+  calculator.twoValues += 1;
   if (calculator.pending === null) {
     calculator.setValue();
-    command = getOperator(val)    
     calculator.setPending(command);
-  } else if (calculator.pending !== null || calculator.history.length === 0){
-    command = getOperator(val);
-    if (calculator.pending.constructor.name !== command.constructor.name) {
-      flag = true;
-      calculator.setPending(command);
+    calculator.resetOperations('');
+    calculator.updateOperations(`${calculator.currentValue} ${val} `); 
+  } else {
+    if (calculator.pending !== null && calculator.twoValues >= 2) {
+      calculateResult(command);
     } else {
-      calculateResult();    
       calculator.setPending(command);
-    }    
+      const operations = calculator.operations;
+      const trimmed = operations.slice(0, -5);
+      calculator.resetOperations('');
+      calculator.updateOperations(`${trimmed} ${val} `);
+    }
   }
+
+  /*
   if (calculator.pending !== null) { 
     if (flag) {
       const operations = calculator.operations;
@@ -193,6 +246,9 @@ function twoArgsOperations(e) {
       calculator.updateOperations(` ${val} `);       
     } 
   }
+  */
+
+
 }
 
 twoArgs.forEach((e) => {

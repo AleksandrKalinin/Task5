@@ -3,13 +3,16 @@ export class Calculator {
     this.value = val;
     this.history = [];
     this.inputHistory = [];
-    this.currentInput = 0;
+    this.currentValue = 0;
     this.pending = null;
     this.operations = '';
+    this.memoryValue = 0;
+    this.memoryHistory = [];
+    this.twoValues = 0;
   }
 
   execute(command) {
-    this.currentInput = command.execute(this.currentInput);
+    this.currentValue = command.execute(this.currentValue);
     if (command.constructor.name === 'SetValueCommand') {
       this.inputHistory.push(command);
     } else {
@@ -22,25 +25,40 @@ export class Calculator {
     this.value = command.undo(this.value);
   }
 
+  executeMemory(command) {
+    this.memoryValue = command.execute(this.memoryValue);
+    this.memoryHistory.push(command);
+  }  
+
+  clearMemory() {
+    this.memoryValue = 0;
+  }
+
+  recallMemory() {
+    this.currentValue = this.memoryValue;
+  }
+
   undoInput() {
     const command = this.inputHistory.pop();
-    this.currentInput = command.undo(this.currentInput)
+    this.currentValue = command.undo(this.currentValue)
   }  
 
   setValue() {
-    this.value = this.currentInput;
+    this.value = this.currentValue;
   }
 
   clear() {
     this.history = [];
     this.value = 0;
-    this.currentInput = 0;
+    this.currentValue = 0;
     this.operations = '';
     this.inputHistory = [];
+    this.pending = null;
+    this.twoValues = 0;
   }
 
   resetInput() {
-    this.currentInput = 0;
+    this.currentValue = 0;
   }
 
   setPending(val) {

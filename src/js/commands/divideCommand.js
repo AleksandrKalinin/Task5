@@ -4,8 +4,10 @@ export class DivideCommand {
   }
 
   execute(currentValue) {
-    if (this.value !== 0) {
+    if (currentValue !== 0) {
       return this.value / currentValue;
+    } else {
+      return 'Деление на 0!'
     }
   }
 
