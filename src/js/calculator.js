@@ -22,7 +22,8 @@ export class Calculator {
 
   undo() {
     const command = this.history.pop();
-    this.value = command.undo(this.value);
+    this.currentValue = command.undo(this.currentValue);
+    this.value = command.undo(this.currentValue)
   }
 
   executeMemory(command) {

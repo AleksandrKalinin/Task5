@@ -98,7 +98,8 @@ btnC.addEventListener('click', () => {
 
 const btnReverseSign = document.getElementById('btnReverseSign');
 btnReverseSign.addEventListener('click', () => {
-  calculator.execute(new ReverseSignCommand());
+  console.log(calculator);
+  //calculator.execute(new ReverseSignCommand());
 }) 
 
 
@@ -126,13 +127,29 @@ btnResult.addEventListener('click', () => {
   calculateResult(null);
 })
 
-const btnReverse = document.getElementById('btnReverse');
-btnReverse.addEventListener('click', () => {
+
+//Function for clearing current value by one digit
+
+const btnBackspace = document.getElementById('btnBackspace');
+btnBackspace.addEventListener('click', () => {
   if (calculator.currentValue !== 0) {
     calculator.undoInput(new SetValueCommand(calculator.currentValue));
   }
 })
 
+
+const btnReverse = document.getElementById('btnReverse');
+btnReverse.addEventListener('click', () => {
+  if (calculator.history.length !== 0) {
+    const current = calculator.history[calculator.history.length - 1];
+    calculator.undo(current);
+    calculator.setValue();
+    calculator.resetOperations('');
+    calculator.updateOperations(calculator.currentValue);
+  } else {
+    calculator.clear();  
+  }
+})
 
 //Listener for 0 - 9 digits
 

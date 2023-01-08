@@ -8,6 +8,6 @@ export class AddCommand {
   }
 
   undo(currentValue) {
-    return currentValue - this.value;
+    return this.value;
   }
 }

@@ -12,6 +12,6 @@ export class DivideCommand {
   }
 
   undo(currentValue) {
-    return this.value + currentValue;
+    return this.value;
   }
 }
