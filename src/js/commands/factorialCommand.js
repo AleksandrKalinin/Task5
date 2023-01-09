@@ -15,13 +15,7 @@ export default class FactorialCommand {
   }
 
   undo(currentValue) {
-    let val = currentValue;
-    let num = 1;    
-    while(val > 1) {
-      num++
-      val = val / num;
-    } 
-    return num;
+    return this.value
   }
 
 }

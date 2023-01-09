@@ -8,6 +8,6 @@ export default class PercentageCommand {
   }
 
   undo(currentValue) {
-    return currentValue / this.value * 100;
+    return this.value;
   }
 }

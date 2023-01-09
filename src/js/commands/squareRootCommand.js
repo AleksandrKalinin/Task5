@@ -4,10 +4,10 @@ export default class SquareRootCommand {
   }
 
   execute(currentValue) {
-    return currentValue ** (1 / 2)
+    return currentValue ** (1 / 2);
   }
 
   undo(currentValue) {
-    return Math.round(currentValue * currentValue);
+    return this.value;
   }
 }

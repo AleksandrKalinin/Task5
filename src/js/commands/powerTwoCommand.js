@@ -8,6 +8,6 @@ export default class PowerTwoCommand {
   }
 
   undo(currentValue) {
-    return Math.sqrt(currentValue);
+    return this.value;
   }
 }

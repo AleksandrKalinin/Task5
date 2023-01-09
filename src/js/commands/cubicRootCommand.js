@@ -4,10 +4,10 @@ export default class CubicRootCommand {
   }
 
   execute(currentValue) {
-    return currentValue ** (1 / 3)
+    return currentValue ** (1 / 3);
   }
 
   undo(currentValue) {
-    return Math.round(currentValue * currentValue * currentValue);
+    return this.value;
   }
 }

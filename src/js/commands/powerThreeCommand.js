@@ -8,6 +8,6 @@ export default class PowerThreeCommand {
   }
 
   undo(currentValue) {
-    return Math.cbrt(currentValue);
+    return this.value;
   }
 }

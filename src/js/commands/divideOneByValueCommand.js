@@ -12,6 +12,6 @@ export default class DivideOneByValueCommand {
   }
 
   undo(currentValue) {
-    return 1 / currentValue;;
+    return this.value;
   }
 }

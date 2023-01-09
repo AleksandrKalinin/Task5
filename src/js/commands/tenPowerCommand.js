@@ -12,6 +12,6 @@ export default class TenPowerCommand {
   }
 
   undo(currentValue) {
-    return currentValue.toString().length - 1;
+    return this.value;
   }
 }
