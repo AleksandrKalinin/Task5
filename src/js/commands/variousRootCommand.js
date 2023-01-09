@@ -1,4 +1,4 @@
-export class VariousRootCommand {
+export default class VariousRootCommand {
   constructor(value) {
     this.value = value;
   }

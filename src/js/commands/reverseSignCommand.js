@@ -1,4 +1,4 @@
-export class ReverseSignCommand {
+export default class ReverseSignCommand {
   constructor(value) {
     this.value = value;
   }

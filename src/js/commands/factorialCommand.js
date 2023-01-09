@@ -1,4 +1,4 @@
-export class FactorialCommand {
+export default class FactorialCommand {
   constructor(value) {
     this.value = value;
   }

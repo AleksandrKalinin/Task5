@@ -1,4 +1,4 @@
-export class PowerTwoCommand {
+export default class PowerTwoCommand {
   constructor(value) {
     this.value = value;
   }

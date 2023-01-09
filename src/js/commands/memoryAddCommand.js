@@ -1,4 +1,4 @@
-export class MemoryAddCommand {
+export default class MemoryAddCommand {
   constructor(memoryValue) {
     this.memoryValue = memoryValue;
   }

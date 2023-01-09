@@ -1,4 +1,4 @@
-export class CubicRootCommand {
+export default class CubicRootCommand {
   constructor(value) {
     this.value = value;
   }

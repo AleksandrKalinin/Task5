@@ -1,4 +1,4 @@
-export class PowerYCommand {
+export default class PowerYCommand {
   constructor(value) {
     this.value = value;
   }

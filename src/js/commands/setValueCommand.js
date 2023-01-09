@@ -1,4 +1,4 @@
-export class SetValueCommand {
+export default class SetValueCommand {
   constructor(value) {
     this.value = value;
   }

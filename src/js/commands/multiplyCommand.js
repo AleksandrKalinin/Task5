@@ -1,4 +1,4 @@
-export class MultiplyCommand {
+export default class MultiplyCommand {
   constructor(value) {
     this.value = value;
   }

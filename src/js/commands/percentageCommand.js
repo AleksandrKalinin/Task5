@@ -1,4 +1,4 @@
-export class PercentageCommand {
+export default class PercentageCommand {
   constructor(value) {
     this.value = value;
   }

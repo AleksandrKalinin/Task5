@@ -1,30 +1,7 @@
 import '../sass/main.sass';
 import './toggle.js';
 import { Calculator } from './calculator';
-import { 
-  AddCommand, 
-  SubtractCommand, 
-  MultiplyCommand, 
-  DivideCommand, 
-  SetValueCommand, 
-  ResetCommand, 
-  FactorialCommand, 
-  ReverseSignCommand, 
-  DivideOneByValueCommand, 
-  TenPowerCommand, 
-  PowerTwoCommand, 
-  PowerThreeCommand, 
-  PowerYCommand, 
-  SquareRootCommand, 
-  CubicRootCommand, 
-  VariousRootCommand, 
-  PercentageCommand,
-  MemoryClearCommand,
-  MemoryRecallCommand,
-  MemoryAddCommand,
-  MemorySubtractCommand 
-} from './commands';
-
+import * as commands from './commands';
 
 const current = document.getElementById('displayCurrent');
 const operations = document.getElementById('displayOperations');
@@ -32,6 +9,7 @@ const operations = document.getElementById('displayOperations');
 
 //Calculator object initialization
 const calculatorObject = new Calculator(0);
+
 const calculator = new Proxy(calculatorObject, {
   set: function (target, key, value) {
     target[key] = value;
@@ -68,11 +46,11 @@ btnMemoryRecall.addEventListener('click', () => {
 })
 
 btnMemoryAdd.addEventListener('click', () => {
-  calculator.executeMemory(new MemoryAddCommand(calculator.currentValue));
+  calculator.executeMemory(new commands.MemoryAddCommand(calculator.currentValue));
 })
 
 btnMemorySubtract.addEventListener('click', () => {
-  calculator.executeMemory(new MemorySubtractCommand(calculator.currentValue));
+  calculator.executeMemory(new commands.MemorySubtractCommand(calculator.currentValue));
 })
 
 
@@ -81,7 +59,7 @@ btnMemorySubtract.addEventListener('click', () => {
 const btnCE = document.getElementById('btnCE');
 btnCE.addEventListener('click', () => {
   if (calculator.currentValue !== 0) {
-    calculator.undoInput(new SetValueCommand(calculator.currentValue));
+    calculator.undoInput(new commands.SetValueCommand(calculator.currentValue));
   }
 })
 
@@ -99,7 +77,7 @@ btnC.addEventListener('click', () => {
 const btnReverseSign = document.getElementById('btnReverseSign');
 btnReverseSign.addEventListener('click', () => {
   console.log(calculator);
-  //calculator.execute(new ReverseSignCommand());
+  calculator.execute(new commands.ReverseSignCommand());
 }) 
 
 
@@ -133,7 +111,7 @@ btnResult.addEventListener('click', () => {
 const btnBackspace = document.getElementById('btnBackspace');
 btnBackspace.addEventListener('click', () => {
   if (calculator.currentValue !== 0) {
-    calculator.undoInput(new SetValueCommand(calculator.currentValue));
+    calculator.undoInput(new commands.SetValueCommand(calculator.currentValue));
   }
 })
 
@@ -167,7 +145,7 @@ function digitsFunction(e) {
     calculator.clear();
   }   
   const digit = Number(e.getAttribute('value'));
-  calculator.execute(new SetValueCommand(digit));  
+  calculator.execute(new commands.SetValueCommand(digit));  
 }
 
 digits.forEach((e) => {
@@ -203,33 +181,33 @@ const twoArgs = document.querySelectorAll('.two__args');
 function getOperator(val) {
   let operation = null;
   switch(val) {
-  case '+': operation = new AddCommand(calculator.currentValue);
+  case '+': operation = new commands.AddCommand(calculator.currentValue);
     break;
-  case '-': operation = new SubtractCommand(calculator.currentValue);
+  case '-': operation = new commands.SubtractCommand(calculator.currentValue);
     break;
-  case '*': operation = new MultiplyCommand(calculator.currentValue);
+  case '*': operation = new commands.MultiplyCommand(calculator.currentValue);
     break;
-  case '/': operation = new DivideCommand(calculator.currentValue);
+  case '/': operation = new commands.DivideCommand(calculator.currentValue);
     break;
-  case 'yroot': operation = new VariousRootCommand(calculator.value);
+  case 'yroot': operation = new commands.VariousRootCommand(calculator.value);
     break;
-  case '^': operation = new PowerYCommand(calculator.value);
+  case '^': operation = new commands.PowerYCommand(calculator.value);
     break;
-  case '%': operation = new PercentageCommand(calculator.value);
+  case '%': operation = new commands.PercentageCommand(calculator.value);
     break;
-  case 'cRoot': operation = new CubicRootCommand(calculator.value);
+  case 'cRoot': operation = new commands.CubicRootCommand(calculator.value);
     break;
-  case 'sRoot': operation = new SquareRootCommand(calculator.value);
+  case 'sRoot': operation = new commands.SquareRootCommand(calculator.value);
     break;
-  case '!': operation = new FactorialCommand(calculator.value);
+  case '!': operation = new commands.FactorialCommand(calculator.value);
     break;
-  case 'power2': operation = new PowerTwoCommand(calculator.value);
+  case 'power2': operation = new commands.PowerTwoCommand(calculator.value);
     break;
-  case 'power3': operation = new PowerThreeCommand(calculator.value);
+  case 'power3': operation = new commands.PowerThreeCommand(calculator.value);
     break;
-  case 'powerTen': operation = new TenPowerCommand(calculator.value);
+  case 'powerTen': operation = new commands.TenPowerCommand(calculator.value);
     break;
-  case 'divideX': operation = new DivideOneByValueCommand(calculator.value);
+  case 'divideX': operation = new commands.DivideOneByValueCommand(calculator.value);
     break;                         
   }
   return operation;   

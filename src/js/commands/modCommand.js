@@ -1,4 +1,4 @@
-export class ModCommand {
+export default class ModCommand {
   constructor(value) {
     this.value = value;
   }

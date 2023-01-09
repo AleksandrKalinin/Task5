@@ -1,4 +1,4 @@
-export class TenPowerCommand {
+export default class TenPowerCommand {
   constructor(value) {
     this.value = value;
   }

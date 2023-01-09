@@ -1,4 +1,4 @@
-export class AddCommand {
+export default class AddCommand {
   constructor(value) {
     this.value = value;
   }

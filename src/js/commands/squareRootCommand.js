@@ -1,4 +1,4 @@
-export class SquareRootCommand {
+export default class SquareRootCommand {
   constructor(value) {
     this.value = value;
   }

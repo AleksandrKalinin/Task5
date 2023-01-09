@@ -1,4 +1,4 @@
-export class SubtractCommand {
+export default class SubtractCommand {
   constructor(value) {
     this.value = value;
   }

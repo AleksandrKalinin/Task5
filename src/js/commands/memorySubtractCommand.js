@@ -1,4 +1,4 @@
-export class MemorySubtractCommand {
+export default class MemorySubtractCommand {
   constructor(value) {
     this.value = value;
   }

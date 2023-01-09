@@ -1,4 +1,4 @@
-export class ResetCommand {
+export default class ResetCommand {
   constructor(value) {
     this.value = value;
   }
