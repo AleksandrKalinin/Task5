@@ -134,7 +134,6 @@ btnReverse.addEventListener('click', () => {
 const digits = document.querySelectorAll('.button-number');
 
 function digitsFunction(e) {
-  console.log('calculator', calculator);
   if (calculator.pending !== null && calculator.value === calculator.currentValue) {
     calculator.resetInput();
   } 

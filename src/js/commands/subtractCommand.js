@@ -8,6 +8,6 @@ export default class SubtractCommand {
   }
 
   undo(currentValue) {
-    return this.value + currentValue;
+    return this.value;
   }
 }

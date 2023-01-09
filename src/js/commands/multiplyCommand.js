@@ -8,6 +8,6 @@ export default class MultiplyCommand {
   }
 
   undo(currentValue) {
-    return currentValue / this.value;
+    return this.value;
   }
 }

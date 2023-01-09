@@ -5,8 +5,6 @@ export default class DivideCommand {
 
   execute(currentValue) {
     if (currentValue !== 0) {
-      console.log('this.value', this.value);
-      console.log('currentValue', currentValue);
       return this.value / currentValue;
     } else {
       return 'Деление на 0!'
