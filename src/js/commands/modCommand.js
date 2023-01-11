@@ -1,10 +1,13 @@
-export default class ModCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class ModCommand extends BaseClass {
 
   execute(currentValue) {
-    return currentValue % this.value;
+    if (currentValue !== 0) {
+      return this.value % currentValue;
+    } else {
+      return this.value;
+    }
   }
 
 }

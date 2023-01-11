@@ -1,7 +1,6 @@
-export default class FactorialCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class FactorialCommand extends BaseClass {
 
   execute(currentValue) {
     if (this.value <= 170 ) {
@@ -12,10 +11,6 @@ export default class FactorialCommand {
       return factorial;
     }
     return 'Too big!';
-  }
-
-  undo(currentValue) {
-    return this.value
   }
 
 }

@@ -2,6 +2,7 @@ import AddCommand from './addCommand';
 import SubtractCommand from './subtractCommand';
 import MultiplyCommand from './multiplyCommand';
 import DivideCommand from './divideCommand';
+import ModCommand from './modCommand';
 import SetValueCommand from './setValueCommand';
 import ResetCommand from './resetCommand';
 import FactorialCommand from './factorialCommand';
@@ -23,6 +24,7 @@ export {
   SubtractCommand, 
   MultiplyCommand, 
   DivideCommand, 
+  ModCommand,
   SetValueCommand, 
   ResetCommand, 
   FactorialCommand, 

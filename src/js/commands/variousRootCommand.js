@@ -1,13 +1,9 @@
-export default class VariousRootCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class VariousRootCommand extends BaseClass {
 
   execute(currentValue) {
     return this.value ** (1 / currentValue)
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

@@ -1,7 +1,6 @@
-export default class DivideOneByValueCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class DivideOneByValueCommand extends BaseClass {
 
   execute(currentValue) {
     if (currentValue !== 0) {
@@ -11,7 +10,4 @@ export default class DivideOneByValueCommand {
     }
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

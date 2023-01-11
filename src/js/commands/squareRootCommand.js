@@ -1,13 +1,9 @@
-export default class SquareRootCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class SquareRootCommand extends BaseClass {
 
   execute(currentValue) {
     return currentValue ** (1 / 2);
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

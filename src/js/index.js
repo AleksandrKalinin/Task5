@@ -76,8 +76,9 @@ btnC.addEventListener('click', () => {
 
 const btnReverseSign = document.getElementById('btnReverseSign');
 btnReverseSign.addEventListener('click', () => {
-  console.log(calculator);
-  calculator.execute(new commands.ReverseSignCommand());
+  if (calculator.currentValue !== 0) {
+    calculator.execute(new commands.ReverseSignCommand());
+  }
 }) 
 
 
@@ -119,11 +120,7 @@ btnBackspace.addEventListener('click', () => {
 const btnReverse = document.getElementById('btnReverse');
 btnReverse.addEventListener('click', () => {
   if (calculator.history.length !== 0) {
-    const current = calculator.history[calculator.history.length - 1];
-    calculator.undo(current);
-    calculator.setValue();
-    calculator.resetOperations('');
-    calculator.updateOperations(calculator.currentValue);
+    calculator.reverse();
   } else {
     calculator.clear();  
   }
@@ -188,6 +185,8 @@ function getOperator(val) {
     break;
   case '/': operation = new commands.DivideCommand(calculator.currentValue);
     break;
+  case 'mod': operation = new commands.ModCommand(calculator.currentValue);
+    break;    
   case 'yroot': operation = new commands.VariousRootCommand(calculator.currentValue);
     break;
   case '^': operation = new commands.PowerYCommand(calculator.currentValue);

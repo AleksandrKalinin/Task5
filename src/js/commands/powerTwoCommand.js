@@ -1,13 +1,9 @@
-export default class PowerTwoCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class PowerTwoCommand extends BaseClass {
 
   execute(currentValue) {
     return currentValue * currentValue;
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

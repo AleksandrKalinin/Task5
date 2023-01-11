@@ -1,13 +1,9 @@
-export default class AddCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class AddCommand extends BaseClass {
 
   execute(currentValue) {
     return currentValue + this.value;
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

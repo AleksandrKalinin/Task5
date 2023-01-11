@@ -1,13 +1,9 @@
-export default class PowerYCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class PowerYCommand extends BaseClass {
 
   execute(currentValue) {
     return this.value ** currentValue;
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

@@ -1,7 +1,6 @@
-export default class TenPowerCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class TenPowerCommand extends BaseClass {
 
   execute(currentValue) {
     let result = 1;
@@ -11,7 +10,4 @@ export default class TenPowerCommand {
     return result;
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

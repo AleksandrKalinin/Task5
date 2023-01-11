@@ -1,13 +1,9 @@
-export default class ReverseSignCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class ReverseSignCommand extends BaseClass {
 
   execute(currentValue) {
     return 0 - currentValue;
   }
 
-  undo(currentValue) {
-    return 0 - currentValue;
-  }
 }

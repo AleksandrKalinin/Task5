@@ -1,13 +1,9 @@
-export default class PowerThreeCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class PowerThreeCommand extends BaseClass {
 
   execute(currentValue) {
     return currentValue * currentValue * currentValue;
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

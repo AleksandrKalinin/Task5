@@ -1,13 +1,9 @@
-export default class SubtractCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class SubtractCommand extends BaseClass {
 
   execute(currentValue) {
     return this.value - currentValue;
   }
 
-  undo(currentValue) {
-    return this.value;
-  }
 }

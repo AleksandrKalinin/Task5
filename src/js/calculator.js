@@ -58,6 +58,14 @@ export class Calculator {
     this.twoValues = 0;
   }
 
+  reverse() {
+    const current = this.history[this.history.length - 1];
+    this.undo(current);
+    this.setValue();
+    this.resetOperations('');
+    this.updateOperations(this.currentValue);    
+  }
+
   resetInput() {
     this.currentValue = 0;
   }

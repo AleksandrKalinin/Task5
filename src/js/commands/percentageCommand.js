@@ -1,13 +1,9 @@
-export default class PercentageCommand {
-  constructor(value) {
-    this.value = value;
-  }
+import { BaseClass } from './baseClass';
+
+export default class PercentageCommand extends BaseClass {
 
   execute(currentValue) {
     return currentValue / 100 * this.value;
   }
-
-  undo(currentValue) {
-    return this.value;
-  }
+ 
 }
