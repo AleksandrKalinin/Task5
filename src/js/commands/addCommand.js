@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class AddCommand extends BaseClass {
+export default class AddCommand extends BaseCommand {
 
   execute(currentValue) {
     return currentValue + this.value;

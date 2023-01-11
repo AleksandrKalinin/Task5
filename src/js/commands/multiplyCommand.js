@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class MultiplyCommand extends BaseClass {
+export default class MultiplyCommand extends BaseCommand {
 
   execute(currentValue) {
     return currentValue * this.value;

@@ -1,4 +1,4 @@
-export class BaseClass {
+export class BaseCommand {
   constructor(value) {
     this.value = value;
   }

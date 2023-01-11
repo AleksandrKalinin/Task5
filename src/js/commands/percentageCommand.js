@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class PercentageCommand extends BaseClass {
+export default class PercentageCommand extends BaseCommand {
 
   execute(currentValue) {
     return currentValue / 100 * this.value;

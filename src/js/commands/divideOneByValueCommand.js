@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class DivideOneByValueCommand extends BaseClass {
+export default class DivideOneByValueCommand extends BaseCommand {
 
   execute(currentValue) {
     if (currentValue !== 0) {

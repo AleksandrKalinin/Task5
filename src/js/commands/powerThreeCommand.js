@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class PowerThreeCommand extends BaseClass {
+export default class PowerThreeCommand extends BaseCommand {
 
   execute(currentValue) {
     return currentValue * currentValue * currentValue;

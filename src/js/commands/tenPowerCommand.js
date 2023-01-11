@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class TenPowerCommand extends BaseClass {
+export default class TenPowerCommand extends BaseCommand {
 
   execute(currentValue) {
     let result = 1;

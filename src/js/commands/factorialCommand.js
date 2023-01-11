@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class FactorialCommand extends BaseClass {
+export default class FactorialCommand extends BaseCommand {
 
   execute(currentValue) {
     if (this.value <= 170 ) {

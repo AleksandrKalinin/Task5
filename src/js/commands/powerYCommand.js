@@ -1,6 +1,6 @@
-import { BaseClass } from './baseClass';
+import { BaseCommand } from './BaseCommand';
 
-export default class PowerYCommand extends BaseClass {
+export default class PowerYCommand extends BaseCommand {
 
   execute(currentValue) {
     return this.value ** currentValue;
