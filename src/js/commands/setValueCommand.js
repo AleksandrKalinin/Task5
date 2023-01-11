@@ -7,6 +7,12 @@ export default class SetValueCommand {
     if (currentValue === 0) {
       return this.value;
     } else {
+    /**
+     * Concatenation of current input and stored value and conversion to Number type.
+     * @param {currentValue} - current input value.
+     * @param {this.value} - stored value.
+     * @return {newValue} -  new concatenated value.
+     */      
       const newValue = Number(currentValue.toString() + this.value.toString());
       return newValue;
     }
