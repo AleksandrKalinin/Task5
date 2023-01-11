@@ -12,7 +12,14 @@ export class Calculator {
   }
 
   execute(command) {
-    this.currentValue = command.execute(this.currentValue);
+    try {
+      this.currentValue = command.execute(this.currentValue);
+    } catch(err) {
+      this.currentValue = err.message;
+      this.resetOperations();
+      this.updateOperations(err.message);
+      console.log(this.currentValue);
+    }
     if (command.constructor.name === 'SetValueCommand') {
       this.inputHistory.push(command);
     } else {

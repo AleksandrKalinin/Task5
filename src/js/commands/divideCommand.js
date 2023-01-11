@@ -6,7 +6,7 @@ export default class DivideCommand extends BaseClass{
     if (currentValue !== 0) {
       return this.value / currentValue;
     } else {
-      return 'Деление на 0!'
+      throw new Error('Division by 0!');
     }
   }
 

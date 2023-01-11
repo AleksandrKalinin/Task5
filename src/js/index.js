@@ -21,12 +21,10 @@ const calculator = new Proxy(calculatorObject, {
 
 
 //Checking dividing by zero
-function checkForZero(target, commandName) {
-  if (calculator.currentValue === 0) {
-    if (target === commandName) {
-      setTimeout(() => calculator.clear(), 1000)
-    }
-  }   
+function checkForError(target, commandName) {
+  if (typeof calculator.currentValue === 'string') {
+    setTimeout(() => calculator.clear(), 1000)
+  }
 }
 
 
@@ -85,7 +83,7 @@ btnReverseSign.addEventListener('click', () => {
 //Calculating result
 
 const calculateResult = (nextCommand) => {
-  checkForZero(calculator?.pending?.constructor.name, 'DivideCommand')
+  //checkForError(calculator?.pending?.constructor.name, 'DivideCommand')
   if (calculator.pending !== null) {
     calculator.execute(calculator.pending);
     calculator.setValue();
@@ -98,6 +96,7 @@ const calculateResult = (nextCommand) => {
     } else {
       calculator.setPending(null);
     }
+    checkForError();
   }
 }
 
@@ -157,10 +156,10 @@ const oneArgs = document.querySelectorAll('.one__args');
 
 function oneArgOperations(e) {
   const command = getOperator(e.getAttribute('value'));
-  checkForZero(command.constructor.name, 'DivideOneByValueCommand');
   calculator.execute(command);
   calculator.resetOperations('');
   calculator.updateOperations(calculator.currentValue);
+  checkForError();
 }
 
 oneArgs.forEach((e) => {

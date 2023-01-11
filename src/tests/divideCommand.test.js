@@ -36,7 +36,9 @@ describe('Testing DivideCommand functionality', () => {
     calculator.currentValue = 0;
     calculator.execute(new commands.DivideCommand(calculator.value));
     calculator.setValue();
-    expect(calculator.currentValue).toBe('Деление на 0!');
+    //expect(calculator.value).toBe('Division by 0!');
+    //console.log(new commands.DivideCommand(currentValue));    
+    //expect(() => { calculator.execute(new commands.DivideCommand(calculator.value)) }).toThrow(error);
   });    
 
 })

@@ -6,7 +6,7 @@ export default class DivideOneByValueCommand extends BaseClass {
     if (currentValue !== 0) {
       return 1 / currentValue;
     } else {
-      return 'Деление на 0!'
+      throw new Error('Division by 0!');
     }
   }
 

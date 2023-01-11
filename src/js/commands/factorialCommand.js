@@ -9,8 +9,9 @@ export default class FactorialCommand extends BaseClass {
         factorial *= i;
       }    
       return factorial;
+    } else {
+      throw new Error('Number is too big!');
     }
-    return 'Too big!';
   }
 
 }
