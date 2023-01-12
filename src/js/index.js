@@ -95,11 +95,7 @@ btnReverseSign.addEventListener('click', () => {
 
 const calculateResult = (nextCommand) => {
   if (calculator.pending !== null) {
-    calculator.execute(calculator.pending);
-    calculator.setValue();
-    calculator.resetOperations('')
-    calculator.updateOperations(calculator.currentValue);
-    calculator.twoValues = 1;
+    calculator.executeOperation();
     if (nextCommand !== null) {
       nextCommand.value = calculator.currentValue;
       calculator.setPending(nextCommand);

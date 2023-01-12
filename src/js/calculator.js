@@ -73,6 +73,14 @@ export class Calculator {
     this.updateOperations(this.currentValue);    
   }
 
+  executeOperation() {
+    this.execute(this.pending);
+    this.setValue();
+    this.resetOperations('')
+    this.updateOperations(this.currentValue);
+    this.twoValues = 1;    
+  }
+
   resetInput() {
     this.currentValue = 0;
   }
