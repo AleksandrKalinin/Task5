@@ -1,32 +1,42 @@
 import '../sass/main.sass';
 import './toggle.js';
-import { Calculator } from './calculator';
 import * as commands from './commands';
+import { current, operations, calculator } from './calculatorObject';
+import { buttons } from './buttons';
 
-const current = document.getElementById('displayCurrent');
-const operations = document.getElementById('displayOperations');
-
-
-//Calculator object initialization
-const calculatorObject = new Calculator(0);
-
-const calculator = new Proxy(calculatorObject, {
-  set: function (target, key, value) {
-    target[key] = value;
-    current.innerText = calculator.currentValue;
-    operations.innerText = calculator.operations;     
-    return true;
+function buildDom(elements) {
+  const rootContainer = document.getElementById('rootContainer');
+  let arr = [];
+  for (let i = 0; i < elements.length; i++) {
+    const el = document.createElement('span');
+    el.innerHTML = elements[i].text;
+    el.setAttribute('id', elements[i].id);
+    el.className = elements[i].class;
+    if (elements[i].value) {
+      el.setAttribute('value', elements[i].value);
+    }
+    arr.push(el);
+    if (arr.length === 8 || i === elements.length - 1)  {
+      const rowElement = document.createElement('div');
+      rowElement.className = 'calculator__row';   
+      arr.forEach((item) => {
+        rowElement.appendChild(item);
+      });
+      rootContainer.appendChild(rowElement);
+      arr = [];
+    } 
   }
-});
+}
 
+buildDom(buttons);
 
 //Checking dividing by zero
-function checkForError(target, commandName) {
+
+function checkForError() {
   if (typeof calculator.currentValue === 'string') {
     setTimeout(() => calculator.clear(), 1000)
   }
 }
-
 
 //Memory buttons functionality
 
@@ -40,7 +50,7 @@ btnMemoryClear.addEventListener('click', () => {
 })
 
 btnMemoryRecall.addEventListener('click', () => {
-  calculator.recallMemory();
+  calculator.executeMemory(new commands.MemoryRecallCommand(calculator.memoryValue));
 })
 
 btnMemoryAdd.addEventListener('click', () => {
@@ -83,7 +93,6 @@ btnReverseSign.addEventListener('click', () => {
 //Calculating result
 
 const calculateResult = (nextCommand) => {
-  //checkForError(calculator?.pending?.constructor.name, 'DivideCommand')
   if (calculator.pending !== null) {
     calculator.execute(calculator.pending);
     calculator.setValue();

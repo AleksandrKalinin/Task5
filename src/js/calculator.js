@@ -34,16 +34,16 @@ export class Calculator {
   }
 
   executeMemory(command) {
-    this.memoryValue = command.execute(this.memoryValue);
+    if (command.constructor.name === 'MemoryRecallCommand') {
+      this.currentValue = command.execute(this.currentValue);
+    } else {
+      this.memoryValue = command.execute(this.memoryValue);
+    }
     this.memoryHistory.push(command);
   }  
 
   clearMemory() {
     this.memoryValue = 0;
-  }
-
-  recallMemory() {
-    this.currentValue = this.memoryValue;
   }
 
   undoInput() {
