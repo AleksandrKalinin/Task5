@@ -12,18 +12,27 @@ export class Calculator {
   }
 
   execute(command) {
-    try {
-      this.currentValue = command.execute(this.currentValue);
-    } catch(err) {
-      this.currentValue = err.message;
-      this.resetOperations();
-      this.updateOperations(err.message);
-      console.log(this.currentValue);
-    }
-    if (command.constructor.name === 'SetValueCommand') {
-      this.inputHistory.push(command);
+    if (command.constructor.name === 'MemoryRecallCommand' || 
+        command.constructor.name === 'MemoryAddCommand' || 
+        command.constructor.name === 'MemorySubtractCommand') {
+      command.constructor.name === 'MemoryRecallCommand' ? 
+        this.currentValue = command.execute(this.currentValue) : 
+        this.memoryValue = command.execute(this.memoryValue);
+      this.memoryHistory.push(command);   
     } else {
-      this.history.push(command);
+      try {
+        this.currentValue = command.execute(this.currentValue);
+      } catch(err) {
+        this.currentValue = err.message;
+        this.resetOperations();
+        this.updateOperations(err.message);
+        console.log(this.currentValue);
+      }
+      if (command.constructor.name === 'SetValueCommand') {
+        this.inputHistory.push(command);
+      } else {
+        this.history.push(command);
+      }
     }
   }
 
@@ -32,15 +41,6 @@ export class Calculator {
     this.currentValue = command.undo(this.currentValue);
     this.value = command.undo(this.currentValue)
   }
-
-  executeMemory(command) {
-    if (command.constructor.name === 'MemoryRecallCommand') {
-      this.currentValue = command.execute(this.currentValue);
-    } else {
-      this.memoryValue = command.execute(this.memoryValue);
-    }
-    this.memoryHistory.push(command);
-  }  
 
   clearMemory() {
     this.memoryValue = 0;

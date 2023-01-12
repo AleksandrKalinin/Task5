@@ -1,18 +1,21 @@
 export const buttons = [
   {
     'text': 'M+',
-    'class': 'calculator__button calculator-button calculator-button_avg calculator-button_medium',
-    'id': 'btnMemoryAdd'
+    'class': 'calculator__button calculator-button calculator-button_avg calculator-button_medium memory-button',
+    'id': 'btnMemoryAdd',
+    'value': 'M+'
   },
   {
     'text': 'M-',
-    'class': 'calculator__button calculator-button calculator-button_avg calculator-button_medium',
-    'id': 'btnMemorySubtract'
+    'class': 'calculator__button calculator-button calculator-button_avg calculator-button_medium memory-button',
+    'id': 'btnMemorySubtract',
+    'value': 'M-'    
   },
   {
     'text': 'MR',
-    'class': 'calculator__button calculator-button calculator-button_avg calculator-button_medium',
-    'id': 'btnMemoryRecall'
+    'class': 'calculator__button calculator-button calculator-button_avg calculator-button_medium memory-button',
+    'id': 'btnMemoryRecall',
+    'value': 'MR'    
   },
   {
     'text': 'MC',

@@ -12,6 +12,23 @@ function buildDom(elements) {
     el.innerHTML = elements[i].text;
     el.setAttribute('id', elements[i].id);
     el.className = elements[i].class;
+    if (el.classList.contains('two__args')) {
+      el.addEventListener('click', () => {
+        twoArgsOperations(el);
+      })
+    } else if(el.classList.contains('one__args')) {
+      el.addEventListener('click', () => {
+        oneArgOperations(el);
+      })
+    } else if(el.classList.contains('button-number')) {
+      el.addEventListener('click', () => {
+        digitsFunction(el);
+      })
+    } else if(el.classList.contains('memory-button')) {
+      el.addEventListener('click', () => {
+        memoryOperations(el);
+      })
+    }
     if (elements[i].value) {
       el.setAttribute('value', elements[i].value);
     }
@@ -41,24 +58,8 @@ function checkForError() {
 //Memory buttons functionality
 
 const btnMemoryClear = document.getElementById('btnMemoryClear');
-const btnMemoryRecall = document.getElementById('btnMemoryRecall');
-const btnMemorySubtract = document.getElementById('btnMemorySubtract');
-const btnMemoryAdd = document.getElementById('btnMemoryAdd');
-
 btnMemoryClear.addEventListener('click', () => {
   calculator.clearMemory();
-})
-
-btnMemoryRecall.addEventListener('click', () => {
-  calculator.executeMemory(new commands.MemoryRecallCommand(calculator.memoryValue));
-})
-
-btnMemoryAdd.addEventListener('click', () => {
-  calculator.executeMemory(new commands.MemoryAddCommand(calculator.currentValue));
-})
-
-btnMemorySubtract.addEventListener('click', () => {
-  calculator.executeMemory(new commands.MemorySubtractCommand(calculator.currentValue));
 })
 
 
@@ -136,8 +137,6 @@ btnReverse.addEventListener('click', () => {
 
 //Listener for 0 - 9 digits
 
-const digits = document.querySelectorAll('.button-number');
-
 function digitsFunction(e) {
   if (calculator.pending !== null && calculator.value === calculator.currentValue) {
     calculator.resetInput();
@@ -152,16 +151,7 @@ function digitsFunction(e) {
   calculator.execute(new commands.SetValueCommand(digit));  
 }
 
-digits.forEach((e) => {
-  e.addEventListener('click', () => {
-    digitsFunction(e)
-  });
-})
-
-
 //Function for processing operations with one argument
-
-const oneArgs = document.querySelectorAll('.one__args');
 
 function oneArgOperations(e) {
   const command = getOperator(e.getAttribute('value'));
@@ -171,16 +161,8 @@ function oneArgOperations(e) {
   checkForError();
 }
 
-oneArgs.forEach((e) => {
-  e.addEventListener('click', () => {
-    oneArgOperations(e);
-  })
-})
-
 
 //Function for processing operations with two arguments
-
-const twoArgs = document.querySelectorAll('.two__args');
 
 function getOperator(val) {
   let operation = null;
@@ -214,9 +196,20 @@ function getOperator(val) {
   case 'powerTen': operation = new commands.TenPowerCommand(calculator.currentValue);
     break;
   case 'divideX': operation = new commands.DivideOneByValueCommand(calculator.currentValue);
-    break;                         
+    break;
+  case 'M+': operation = new commands.MemoryAddCommand(calculator.currentValue);
+    break;
+  case 'M-': operation = new commands.MemorySubtractCommand(calculator.currentValue);
+    break;
+  case 'MR': operation = new commands.MemoryRecallCommand(calculator.memoryValue);
+    break;                              
   }
   return operation;   
+}
+
+function memoryOperations(e) {
+  const command = getOperator(e.getAttribute('value'));
+  calculator.execute(command);
 }
 
 function twoArgsOperations(e) {
@@ -241,8 +234,3 @@ function twoArgsOperations(e) {
   }
 }
 
-twoArgs.forEach((e) => {
-  e.addEventListener('click', () => {
-    twoArgsOperations(e);
-  })
-});
