@@ -47,13 +47,6 @@ function buildDom(elements) {
 
 buildDom(buttons);
 
-//Checking dividing by zero
-
-function checkForError() {
-  if (typeof calculator.currentValue === 'string') {
-    setTimeout(() => calculator.clear(), 1000)
-  }
-}
 
 //Memory buttons functionality
 
@@ -102,7 +95,6 @@ const calculateResult = (nextCommand) => {
     } else {
       calculator.setPending(null);
     }
-    checkForError();
   }
 }
 
@@ -154,7 +146,6 @@ function oneArgOperations(e) {
   calculator.execute(command);
   calculator.resetOperations('');
   calculator.updateOperations(calculator.currentValue);
-  checkForError();
 }
 
 

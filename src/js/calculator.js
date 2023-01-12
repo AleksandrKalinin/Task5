@@ -26,7 +26,7 @@ export class Calculator {
         this.currentValue = err.message;
         this.resetOperations();
         this.updateOperations(err.message);
-        console.log(this.currentValue);
+        setTimeout(() => this.clear(), 1000)
       }
       if (command.constructor.name === 'SetValueCommand') {
         this.inputHistory.push(command);
