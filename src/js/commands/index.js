@@ -18,6 +18,7 @@ import VariousRootCommand from './variousRootCommand';
 import PercentageCommand from './percentageCommand';
 import MemoryAddCommand from './memoryAddCommand';
 import MemorySubtractCommand from './memorySubtractCommand';
+import MemoryRecallCommand from './memoryRecallCommand';
 
 export { 
   AddCommand, 
@@ -39,5 +40,6 @@ export {
   VariousRootCommand, 
   PercentageCommand,
   MemoryAddCommand,
-  MemorySubtractCommand 
+  MemorySubtractCommand,
+  MemoryRecallCommand 
 }

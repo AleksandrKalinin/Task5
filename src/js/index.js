@@ -1,54 +1,58 @@
 import '../sass/main.sass';
 import './toggle.js';
-import { Calculator } from './calculator';
 import * as commands from './commands';
+import { current, operations, calculator } from './calculatorObject';
+import { buttons } from './buttons';
 
-const current = document.getElementById('displayCurrent');
-const operations = document.getElementById('displayOperations');
-
-
-//Calculator object initialization
-const calculatorObject = new Calculator(0);
-
-const calculator = new Proxy(calculatorObject, {
-  set: function (target, key, value) {
-    target[key] = value;
-    current.innerText = calculator.currentValue;
-    operations.innerText = calculator.operations;     
-    return true;
-  }
-});
-
-
-//Checking dividing by zero
-function checkForError(target, commandName) {
-  if (typeof calculator.currentValue === 'string') {
-    setTimeout(() => calculator.clear(), 1000)
+function buildDom(elements) {
+  const rootContainer = document.getElementById('rootContainer');
+  let arr = [];
+  for (let i = 0; i < elements.length; i++) {
+    const el = document.createElement('span');
+    el.innerHTML = elements[i].text;
+    el.setAttribute('id', elements[i].id);
+    el.className = elements[i].class;
+    if (el.classList.contains('two__args')) {
+      el.addEventListener('click', () => {
+        twoArgsOperations(el);
+      })
+    } else if(el.classList.contains('one__args')) {
+      el.addEventListener('click', () => {
+        oneArgOperations(el);
+      })
+    } else if(el.classList.contains('button-number')) {
+      el.addEventListener('click', () => {
+        digitsFunction(el);
+      })
+    } else if(el.classList.contains('memory-button')) {
+      el.addEventListener('click', () => {
+        memoryOperations(el);
+      })
+    }
+    if (elements[i].value) {
+      el.setAttribute('value', elements[i].value);
+    }
+    arr.push(el);
+    if (arr.length === 8 || i === elements.length - 1)  {
+      const rowElement = document.createElement('div');
+      rowElement.className = 'calculator__row';   
+      arr.forEach((item) => {
+        rowElement.appendChild(item);
+      });
+      rootContainer.appendChild(rowElement);
+      arr = [];
+    } 
   }
 }
+
+buildDom(buttons);
 
 
 //Memory buttons functionality
 
 const btnMemoryClear = document.getElementById('btnMemoryClear');
-const btnMemoryRecall = document.getElementById('btnMemoryRecall');
-const btnMemorySubtract = document.getElementById('btnMemorySubtract');
-const btnMemoryAdd = document.getElementById('btnMemoryAdd');
-
 btnMemoryClear.addEventListener('click', () => {
   calculator.clearMemory();
-})
-
-btnMemoryRecall.addEventListener('click', () => {
-  calculator.recallMemory();
-})
-
-btnMemoryAdd.addEventListener('click', () => {
-  calculator.executeMemory(new commands.MemoryAddCommand(calculator.currentValue));
-})
-
-btnMemorySubtract.addEventListener('click', () => {
-  calculator.executeMemory(new commands.MemorySubtractCommand(calculator.currentValue));
 })
 
 
@@ -83,20 +87,14 @@ btnReverseSign.addEventListener('click', () => {
 //Calculating result
 
 const calculateResult = (nextCommand) => {
-  //checkForError(calculator?.pending?.constructor.name, 'DivideCommand')
   if (calculator.pending !== null) {
-    calculator.execute(calculator.pending);
-    calculator.setValue();
-    calculator.resetOperations('')
-    calculator.updateOperations(calculator.currentValue);
-    calculator.twoValues = 1;
+    calculator.executeOperation();
     if (nextCommand !== null) {
       nextCommand.value = calculator.currentValue;
       calculator.setPending(nextCommand);
     } else {
       calculator.setPending(null);
     }
-    checkForError();
   }
 }
 
@@ -127,8 +125,6 @@ btnReverse.addEventListener('click', () => {
 
 //Listener for 0 - 9 digits
 
-const digits = document.querySelectorAll('.button-number');
-
 function digitsFunction(e) {
   if (calculator.pending !== null && calculator.value === calculator.currentValue) {
     calculator.resetInput();
@@ -143,35 +139,17 @@ function digitsFunction(e) {
   calculator.execute(new commands.SetValueCommand(digit));  
 }
 
-digits.forEach((e) => {
-  e.addEventListener('click', () => {
-    digitsFunction(e)
-  });
-})
-
-
 //Function for processing operations with one argument
-
-const oneArgs = document.querySelectorAll('.one__args');
 
 function oneArgOperations(e) {
   const command = getOperator(e.getAttribute('value'));
   calculator.execute(command);
   calculator.resetOperations('');
   calculator.updateOperations(calculator.currentValue);
-  checkForError();
 }
-
-oneArgs.forEach((e) => {
-  e.addEventListener('click', () => {
-    oneArgOperations(e);
-  })
-})
 
 
 //Function for processing operations with two arguments
-
-const twoArgs = document.querySelectorAll('.two__args');
 
 function getOperator(val) {
   let operation = null;
@@ -205,9 +183,20 @@ function getOperator(val) {
   case 'powerTen': operation = new commands.TenPowerCommand(calculator.currentValue);
     break;
   case 'divideX': operation = new commands.DivideOneByValueCommand(calculator.currentValue);
-    break;                         
+    break;
+  case 'M+': operation = new commands.MemoryAddCommand(calculator.currentValue);
+    break;
+  case 'M-': operation = new commands.MemorySubtractCommand(calculator.currentValue);
+    break;
+  case 'MR': operation = new commands.MemoryRecallCommand(calculator.memoryValue);
+    break;                              
   }
   return operation;   
+}
+
+function memoryOperations(e) {
+  const command = getOperator(e.getAttribute('value'));
+  calculator.execute(command);
 }
 
 function twoArgsOperations(e) {
@@ -232,8 +221,3 @@ function twoArgsOperations(e) {
   }
 }
 
-twoArgs.forEach((e) => {
-  e.addEventListener('click', () => {
-    twoArgsOperations(e);
-  })
-});

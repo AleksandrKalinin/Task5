@@ -12,18 +12,27 @@ export class Calculator {
   }
 
   execute(command) {
-    try {
-      this.currentValue = command.execute(this.currentValue);
-    } catch(err) {
-      this.currentValue = err.message;
-      this.resetOperations();
-      this.updateOperations(err.message);
-      console.log(this.currentValue);
-    }
-    if (command.constructor.name === 'SetValueCommand') {
-      this.inputHistory.push(command);
+    if (command.constructor.name === 'MemoryRecallCommand' || 
+        command.constructor.name === 'MemoryAddCommand' || 
+        command.constructor.name === 'MemorySubtractCommand') {
+      command.constructor.name === 'MemoryRecallCommand' ? 
+        this.currentValue = command.execute(this.currentValue) : 
+        this.memoryValue = command.execute(this.memoryValue);
+      this.memoryHistory.push(command);   
     } else {
-      this.history.push(command);
+      try {
+        this.currentValue = command.execute(this.currentValue);
+      } catch(err) {
+        this.currentValue = err.message;
+        this.resetOperations();
+        this.updateOperations(err.message);
+        setTimeout(() => this.clear(), 1000)
+      }
+      if (command.constructor.name === 'SetValueCommand') {
+        this.inputHistory.push(command);
+      } else {
+        this.history.push(command);
+      }
     }
   }
 
@@ -33,17 +42,8 @@ export class Calculator {
     this.value = command.undo(this.currentValue)
   }
 
-  executeMemory(command) {
-    this.memoryValue = command.execute(this.memoryValue);
-    this.memoryHistory.push(command);
-  }  
-
   clearMemory() {
     this.memoryValue = 0;
-  }
-
-  recallMemory() {
-    this.currentValue = this.memoryValue;
   }
 
   undoInput() {
@@ -71,6 +71,14 @@ export class Calculator {
     this.setValue();
     this.resetOperations('');
     this.updateOperations(this.currentValue);    
+  }
+
+  executeOperation() {
+    this.execute(this.pending);
+    this.setValue();
+    this.resetOperations('')
+    this.updateOperations(this.currentValue);
+    this.twoValues = 1;    
   }
 
   resetInput() {
